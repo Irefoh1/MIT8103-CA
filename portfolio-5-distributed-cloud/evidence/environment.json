@@ -1,0 +1,15 @@
+{
+  "executed_at_utc": "2026-11-12T10:46:11.869742+00:00",
+  "postgresql": "PostgreSQL 18.3 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit",
+  "image": [
+    "postgres@sha256:4da1a4828be12604092fa55311276f08f9224a74a62dcb4708bd7439e2a03911"
+  ],
+  "primary": "markethub-p5-verified-primary",
+  "standby": "markethub-p5-verified-standby",
+  "network": "markethub-p5-verified-network",
+  "volumes": [
+    "markethub-p5-verified-primary-data",
+    "markethub-p5-verified-standby-data"
+  ],
+  "local_lab_not_cloud_deployment": true
+}

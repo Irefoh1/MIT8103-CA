@@ -1,0 +1,2 @@
+walreceiver|streaming|async|0/30042E0|0/30042E0|0/30042E0|0/30042E0
+p5_standby_slot|physical|t|0/30042E0

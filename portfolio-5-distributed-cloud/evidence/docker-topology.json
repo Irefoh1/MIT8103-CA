@@ -1,0 +1,32 @@
+[
+  {
+    "name": "/markethub-p5-verified-primary",
+    "networks": [
+      "markethub-p5-verified-network"
+    ],
+    "published_ports": {
+      "5432/tcp": null
+    },
+    "mounts": [
+      {
+        "name": "markethub-p5-verified-primary-data",
+        "destination": "/var/lib/postgresql"
+      }
+    ]
+  },
+  {
+    "name": "/markethub-p5-verified-standby",
+    "networks": [
+      "markethub-p5-verified-network"
+    ],
+    "published_ports": {
+      "5432/tcp": null
+    },
+    "mounts": [
+      {
+        "name": "markethub-p5-verified-standby-data",
+        "destination": "/var/lib/postgresql"
+      }
+    ]
+  }
+]

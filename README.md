@@ -14,7 +14,7 @@ MarketHub is a simulated online retailer selling physical products to registered
 | 2. Query processing and optimisation | [Portfolio 2](portfolio-2-query-optimisation/README.md) | Four queries, reproducible benchmark, additional indexes, and measured evidence; student review pending |
 | 3. Transactions and concurrency | [Portfolio 3](portfolio-3-transactions-concurrency/README.md) | Commit, rollback, isolation, unsafe/protected checkout races, and 17 verified checks; student review pending |
 | 4. NoSQL and advanced data models | [Portfolio 4](portfolio-4-nosql/README.md) | MongoDB catalogue imported from P1, CRUD, validation, indexes, and 19 verified checks; student review pending |
-| 5. Distributed and cloud databases | To be added | Pending |
+| 5. Distributed and cloud databases | [Portfolio 5](portfolio-5-distributed-cloud/README.md) | PostgreSQL primary/standby replication, stale reads, planned outage/recovery, and 19 verified checks; student review pending |
 
 See the [cross-portfolio roadmap](portfolio-roadmap.md) for how this design supports SQL optimisation, concurrency, a MongoDB catalogue, and a PostgreSQL replication exercise.
 

@@ -1,0 +1,2 @@
+walreceiver|streaming|async|0/3000000|0/3000000|0/3000000|0/3000000
+p5_standby_slot|physical|t|0/3000000

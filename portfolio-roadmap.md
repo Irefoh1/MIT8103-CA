@@ -18,7 +18,7 @@ The document model intentionally differs from the normalised SQL model because i
 
 ## Portfolio 5 boundaries
 
-The brief allows a distributed/cloud discussion **or** setup for the same case study. A local replication lab provides practical distributed-database evidence; it is not evidence of a cloud deployment. If a cloud service is actually deployed later, record that separately.
+The brief allows a distributed/cloud discussion **or** setup for the same case study. Portfolio 5 now implements a local PostgreSQL primary/standby replication lab with 19 verified checks, deliberate stale-read evidence, and a planned primary outage/restart. See `portfolio-5-distributed-cloud/README.md`. This provides practical distributed-database evidence; it is not evidence of a cloud deployment. If a cloud service is actually deployed later, record that separately.
 
 Asynchronous replication can produce stale standby reads and lose unreplicated transactions if the primary fails. A primary plus standby does not automatically provide failover, split-brain prevention, or continuous availability. Any failover claim requires a tested promotion/routing procedure and its limitations. Compare synchronous replication's durability benefits with its latency and availability costs.
 

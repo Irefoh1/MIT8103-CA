@@ -1,0 +1,1135 @@
+$ docker container inspect markethub-p5-verified-primary
+[]
+Error response from daemon: No such container: markethub-p5-verified-primary
+
+
+$ docker container inspect markethub-p5-verified-standby
+[]
+Error response from daemon: No such container: markethub-p5-verified-standby
+
+
+$ docker network inspect markethub-p5-verified-network
+[]
+Error response from daemon: network markethub-p5-verified-network not found
+
+
+$ docker volume inspect markethub-p5-verified-primary-data
+[]
+Error response from daemon: get markethub-p5-verified-primary-data: no such volume
+
+
+$ docker volume inspect markethub-p5-verified-standby-data
+[]
+Error response from daemon: get markethub-p5-verified-standby-data: no such volume
+
+
+$ docker network create --internal markethub-p5-verified-network
+36bde85d3ac21a8c190c1fc9fc0821e0a270d3c43dca871fa0b81e888bd2691d
+
+
+$ docker volume create markethub-p5-verified-primary-data
+markethub-p5-verified-primary-data
+
+
+$ docker volume create markethub-p5-verified-standby-data
+markethub-p5-verified-standby-data
+
+
+$ docker run --detach --name markethub-p5-verified-primary --network markethub-p5-verified-network -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGRES_DB=markethub_portfolio -v markethub-p5-verified-primary-data:/var/lib/postgresql postgres:18-alpine -c wal_level=replica -c max_wal_senders=5 -c max_replication_slots=5 -c max_slot_wal_keep_size=128MB
+465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6
+
+
+$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+127.0.0.1:5432 - no response
+
+
+$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+127.0.0.1:5432 - no response
+
+
+$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+127.0.0.1:5432 - no response
+
+
+$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+127.0.0.1:5432 - no response
+
+
+$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+127.0.0.1:5432 - no response
+
+
+$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+127.0.0.1:5432 - no response
+
+
+$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+127.0.0.1:5432 - no response
+
+
+$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+127.0.0.1:5432 - no response
+
+
+$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+127.0.0.1:5432 - accepting connections
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+-- PostgreSQL; run once in a fresh practice database.
+BEGIN;
+CREATE SCHEMA markethub;
+SET LOCAL search_path TO markethub, public;
+
+CREATE TABLE customers (
+    customer_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    full_name varchar(150) NOT NULL CHECK (btrim(full_name) <> ''),
+    email varchar(254) NOT NULL UNIQUE
+        CHECK (email = lower(btrim(email)) AND email <> ''),
+    phone varchar(30),
+    created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE customer_addresses (
+    address_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    customer_id bigint NOT NULL REFERENCES customers ON DELETE RESTRICT,
+    recipient_name varchar(150) NOT NULL CHECK (btrim(recipient_name) <> ''),
+    address_line text NOT NULL CHECK (btrim(address_line) <> ''),
+    city varchar(100) NOT NULL CHECK (btrim(city) <> ''),
+    state varchar(100) NOT NULL CHECK (btrim(state) <> ''),
+    postal_code varchar(20),
+    country varchar(100) NOT NULL DEFAULT 'Nigeria' CHECK (btrim(country) <> '')
+);
+
+CREATE TABLE categories (
+    category_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    category_name varchar(100) NOT NULL UNIQUE CHECK (btrim(category_name) <> '')
+);
+
+CREATE TABLE products (
+    product_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    category_id bigint NOT NULL REFERENCES categories ON DELETE RESTRICT,
+    sku varchar(50) NOT NULL UNIQUE CHECK (btrim(sku) <> ''),
+    product_name varchar(200) NOT NULL CHECK (btrim(product_name) <> ''),
+    description text,
+    current_price numeric(12,2) NOT NULL CHECK (current_price >= 0),
+    is_active boolean NOT NULL DEFAULT true
+);
+
+CREATE TABLE inventory (
+    product_id bigint PRIMARY KEY REFERENCES products ON DELETE RESTRICT,
+    quantity_on_hand integer NOT NULL DEFAULT 0 CHECK (quantity_on_hand >= 0),
+    reorder_level integer NOT NULL DEFAULT 5 CHECK (reorder_level >= 0)
+);
+
+CREATE TABLE orders (
+    order_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    customer_id bigint NOT NULL REFERENCES customers ON DELETE RESTRICT,
+    ordered_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    status varchar(20) NOT NULL DEFAULT 'draft'
+        CHECK (status IN ('draft','placed','paid','shipped','delivered','cancelled')),
+    delivery_recipient varchar(150) NOT NULL CHECK (btrim(delivery_recipient) <> ''),
+    delivery_address_line text NOT NULL CHECK (btrim(delivery_address_line) <> ''),
+    delivery_city varchar(100) NOT NULL CHECK (btrim(delivery_city) <> ''),
+    delivery_state varchar(100) NOT NULL CHECK (btrim(delivery_state) <> ''),
+    delivery_postal_code varchar(20),
+    delivery_country varchar(100) NOT NULL DEFAULT 'Nigeria'
+        CHECK (btrim(delivery_country) <> '')
+);
+
+CREATE TABLE order_items (
+    order_id bigint NOT NULL REFERENCES orders ON DELETE RESTRICT,
+    product_id bigint NOT NULL REFERENCES products ON DELETE RESTRICT,
+    quantity integer NOT NULL CHECK (quantity > 0),
+    unit_price numeric(12,2) NOT NULL CHECK (unit_price >= 0),
+    PRIMARY KEY (order_id, product_id)
+);
+
+CREATE TABLE payment_attempts (
+    payment_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    order_id bigint NOT NULL REFERENCES orders ON DELETE RESTRICT,
+    provider_reference varchar(150) NOT NULL UNIQUE
+        CHECK (btrim(provider_reference) <> ''),
+    amount numeric(12,2) NOT NULL CHECK (amount > 0),
+    status varchar(20) NOT NULL
+        CHECK (status IN ('pending','successful','failed')),
+    attempted_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE UNIQUE INDEX one_successful_payment_per_order
+    ON payment_attempts(order_id) WHERE status = 'successful';
+
+CREATE TABLE shipments (
+    shipment_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    order_id bigint NOT NULL REFERENCES orders ON DELETE RESTRICT,
+    carrier varchar(100) NOT NULL CHECK (btrim(carrier) <> ''),
+    tracking_number varchar(100) NOT NULL CHECK (btrim(tracking_number) <> ''),
+    status varchar(20) NOT NULL DEFAULT 'pending'
+        CHECK (status IN ('pending','in_transit','delivered')),
+    shipped_at timestamptz,
+    delivered_at timestamptz,
+    UNIQUE (carrier, tracking_number),
+    CHECK (delivered_at IS NULL OR
+        (shipped_at IS NOT NULL AND delivered_at >= shipped_at)),
+    CHECK ((status = 'pending' AND shipped_at IS NULL AND delivered_at IS NULL)
+        OR (status = 'in_transit' AND shipped_at IS NOT NULL AND delivered_at IS NULL)
+        OR (status = 'delivered' AND shipped_at IS NOT NULL AND delivered_at IS NOT NULL))
+);
+
+-- FK indexes support joins and checks on referenced rows.
+CREATE INDEX addresses_customer_idx ON customer_addresses(customer_id);
+CREATE INDEX products_category_idx ON products(category_id);
+CREATE INDEX orders_customer_idx ON orders(customer_id);
+CREATE INDEX order_items_product_idx ON order_items(product_id);
+CREATE INDEX payment_attempts_order_idx ON payment_attempts(order_id);
+CREATE INDEX shipments_order_idx ON shipments(order_id);
+COMMIT;
+
+BEGIN
+CREATE SCHEMA
+SET
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+COMMIT
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+-- Synthetic educational data. Run after schema.sql in a fresh database.
+BEGIN;
+SET LOCAL search_path TO markethub, public;
+INSERT INTO customers (full_name,email) VALUES
+    ('Ada Okafor','ada@example.test'), ('Tunde Bello','tunde@example.test');
+INSERT INTO customer_addresses
+    (customer_id,recipient_name,address_line,city,state)
+SELECT customer_id,full_name,'10 Example Street','Ikeja','Lagos'
+FROM customers WHERE email = 'ada@example.test';
+
+INSERT INTO categories (category_name) VALUES ('Electronics'),('Office Supplies');
+INSERT INTO products (category_id,sku,product_name,current_price)
+SELECT category_id,'KB-001','USB Keyboard',15000 FROM categories WHERE category_name='Electronics';
+INSERT INTO products (category_id,sku,product_name,current_price)
+SELECT category_id,'MS-001','Optical Mouse',5000 FROM categories WHERE category_name='Electronics';
+INSERT INTO products (category_id,sku,product_name,current_price)
+SELECT category_id,'NB-001','Notebook',2000 FROM categories WHERE category_name='Office Supplies';
+INSERT INTO inventory (product_id,quantity_on_hand,reorder_level)
+SELECT product_id,CASE sku WHEN 'KB-001' THEN 20 WHEN 'MS-001' THEN 50 ELSE 100 END,5 FROM products;
+
+INSERT INTO orders (customer_id,delivery_recipient,delivery_address_line,delivery_city,delivery_state)
+SELECT customer_id,recipient_name,address_line,city,state FROM customer_addresses;
+INSERT INTO order_items (order_id,product_id,quantity,unit_price)
+SELECT o.order_id,p.product_id,CASE p.sku WHEN 'KB-001' THEN 2 ELSE 1 END,p.current_price
+FROM orders o CROSS JOIN products p WHERE p.sku IN ('KB-001','MS-001');
+UPDATE inventory i SET quantity_on_hand = i.quantity_on_hand - oi.quantity
+FROM order_items oi WHERE i.product_id=oi.product_id;
+UPDATE orders SET status='placed';
+INSERT INTO payment_attempts (order_id,provider_reference,amount,status)
+SELECT order_id,'DEMO-FAILED-001',35000,'failed' FROM orders;
+INSERT INTO payment_attempts (order_id,provider_reference,amount,status)
+SELECT order_id,'DEMO-SUCCESS-001',35000,'successful' FROM orders;
+UPDATE orders SET status='paid';
+INSERT INTO shipments (order_id,carrier,tracking_number,status,shipped_at)
+SELECT order_id,'Demo Courier','DEMO-TRACK-001','in_transit',CURRENT_TIMESTAMP FROM orders;
+UPDATE orders SET status='shipped';
+COMMIT;
+
+-- Expected: one order, Ada Okafor, shipped, 35000.00.
+SELECT o.order_id,c.full_name,o.status,SUM(oi.quantity*oi.unit_price) AS order_total_ngn
+FROM markethub.orders o
+JOIN markethub.customers c USING (customer_id)
+JOIN markethub.order_items oi USING (order_id)
+GROUP BY o.order_id,c.full_name,o.status;
+
+-- Expected: KB-001=18, MS-001=49, NB-001=100.
+SELECT p.sku,i.quantity_on_hand FROM markethub.products p
+JOIN markethub.inventory i USING (product_id) ORDER BY p.sku;
+
+-- Expected: failed=1, successful=1.
+SELECT status,COUNT(*) FROM markethub.payment_attempts GROUP BY status ORDER BY status;
+
+BEGIN
+SET
+INSERT 0 2
+INSERT 0 1
+INSERT 0 2
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 3
+INSERT 0 1
+INSERT 0 2
+UPDATE 2
+UPDATE 1
+INSERT 0 1
+INSERT 0 1
+UPDATE 1
+INSERT 0 1
+UPDATE 1
+COMMIT
+1|Ada Okafor|shipped|35000.00
+KB-001|18
+MS-001|49
+NB-001|100
+failed|1
+successful|1
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+CREATE ROLE replicator WITH LOGIN REPLICATION;
+CREATE ROLE
+
+
+$ docker exec markethub-p5-verified-primary sh -c echo "host replication replicator 0.0.0.0/0 trust" >> "$PGDATA/pg_hba.conf"
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT pg_reload_conf();
+t
+
+
+$ docker run --rm --network markethub-p5-verified-network -e PGDATA=/var/lib/postgresql/18/docker -e PGHOST=markethub-p5-verified-primary -e PGUSER=replicator -v markethub-p5-verified-standby-data:/var/lib/postgresql --entrypoint sh postgres:18-alpine -c mkdir -p "$PGDATA" && chown postgres:postgres "$PGDATA" && chmod 700 "$PGDATA" && gosu postgres pg_basebackup -D "$PGDATA" -R -X stream -C -S p5_standby_slot --checkpoint=fast
+
+
+$ docker run --detach --name markethub-p5-verified-standby --network markethub-p5-verified-network -v markethub-p5-verified-standby-data:/var/lib/postgresql postgres:18-alpine
+044262ec56e6a2359e6432557e9c81714796807d2c8f5eea36a05e80188d346c
+
+
+$ docker exec markethub-p5-verified-standby pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+127.0.0.1:5432 - rejecting connections
+
+
+$ docker exec markethub-p5-verified-standby pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+127.0.0.1:5432 - accepting connections
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT pg_is_in_recovery();
+f
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT pg_is_in_recovery();
+t
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT count(*) FROM pg_stat_replication WHERE state='streaming' AND sync_state='async';
+1
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT count(*) FROM markethub.products;
+3
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT sum(quantity*unit_price) FROM markethub.order_items;
+35000.00
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT name,setting,unit FROM pg_settings WHERE name IN
+    ('wal_level','max_wal_senders','max_replication_slots','max_slot_wal_keep_size',
+     'synchronous_commit','synchronous_standby_names','hot_standby') ORDER BY name;
+hot_standby|on|
+max_replication_slots|5|
+max_slot_wal_keep_size|128|MB
+max_wal_senders|5|
+synchronous_commit|on|
+synchronous_standby_names||
+wal_level|replica|
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT name,setting,unit FROM pg_settings WHERE name IN
+    ('wal_level','max_wal_senders','max_replication_slots','max_slot_wal_keep_size',
+     'synchronous_commit','synchronous_standby_names','hot_standby') ORDER BY name;
+hot_standby|on|
+max_replication_slots|10|
+max_slot_wal_keep_size|-1|MB
+max_wal_senders|10|
+synchronous_commit|on|
+synchronous_standby_names||
+wal_level|replica|
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT application_name,state,sync_state,sent_lsn,write_lsn,flush_lsn,replay_lsn
+    FROM pg_stat_replication; SELECT slot_name,slot_type,active,restart_lsn FROM pg_replication_slots;
+walreceiver|streaming|async|0/3000000|0/3000000|0/3000000|0/3000000
+p5_standby_slot|physical|t|0/3000000
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+UPDATE markethub.products SET current_price=1 WHERE sku='KB-001';
+ERROR:  25006: cannot execute UPDATE in a read-only transaction
+LOCATION:  PreventCommandIfReadOnly, utility.c:407
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT pg_wal_replay_pause();
+
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT pg_get_wal_replay_pause_state();
+paused
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT current_price FROM markethub.products WHERE sku='KB-001';
+15000.00
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT current_price FROM markethub.products WHERE sku='KB-001';
+15000.00
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+BEGIN;
+    UPDATE markethub.products SET current_price=18000 WHERE sku='KB-001';
+    COMMIT;
+    SELECT current_price FROM markethub.products WHERE sku='KB-001';
+    SELECT pg_current_wal_lsn();
+BEGIN
+UPDATE 1
+COMMIT
+18000.00
+0/30001F8
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT current_price FROM markethub.products WHERE sku='KB-001';
+18000.00
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT sku,current_price FROM markethub.products WHERE sku='KB-001';
+    SELECT pg_last_wal_receive_lsn(),pg_last_wal_replay_lsn(),pg_get_wal_replay_pause_state();
+KB-001|15000.00
+0/30001F8|0/3000000|paused
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT pg_wal_replay_resume();
+
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT current_price FROM markethub.products WHERE sku='KB-001';
+18000.00
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT sum(quantity*unit_price) FROM markethub.order_items;
+35000.00
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT application_name,state,sync_state,sent_lsn,write_lsn,flush_lsn,replay_lsn
+    FROM pg_stat_replication; SELECT slot_name,slot_type,active,restart_lsn FROM pg_replication_slots;
+walreceiver|streaming|async|0/30001F8|0/30001F8|0/30001F8|0/30001F8
+p5_standby_slot|physical|t|0/30001F8
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT sku,current_price FROM markethub.products ORDER BY sku;
+KB-001|18000.00
+MS-001|5000.00
+NB-001|2000.00
+
+
+$ docker stop --time 20 markethub-p5-verified-primary
+Flag --time has been deprecated, use --timeout instead
+markethub-p5-verified-primary
+
+
+$ docker exec markethub-p5-verified-primary pg_isready -U postgres
+Error response from daemon: container 465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6 is not running
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT current_price FROM markethub.products WHERE sku='KB-001';
+18000.00
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT pg_is_in_recovery();
+t
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+UPDATE markethub.products SET current_price=19000 WHERE sku='KB-001';
+ERROR:  25006: cannot execute UPDATE in a read-only transaction
+LOCATION:  PreventCommandIfReadOnly, utility.c:407
+
+
+$ docker start markethub-p5-verified-primary
+markethub-p5-verified-primary
+
+
+$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+127.0.0.1:5432 - accepting connections
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT count(*) FROM pg_stat_replication WHERE state='streaming';
+0
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT count(*) FROM pg_stat_replication WHERE state='streaming';
+1
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+UPDATE markethub.products SET current_price=5500 WHERE sku='MS-001';
+UPDATE 1
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT current_price FROM markethub.products WHERE sku='MS-001';
+5500.00
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT sku,current_price FROM markethub.products ORDER BY sku;
+KB-001|18000.00
+MS-001|5500.00
+NB-001|2000.00
+
+
+$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT sku,current_price FROM markethub.products ORDER BY sku;
+KB-001|18000.00
+MS-001|5500.00
+NB-001|2000.00
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT application_name,state,sync_state,sent_lsn,write_lsn,flush_lsn,replay_lsn
+    FROM pg_stat_replication; SELECT slot_name,slot_type,active,restart_lsn FROM pg_replication_slots;
+walreceiver|streaming|async|0/30042E0|0/30042E0|0/30042E0|0/30042E0
+p5_standby_slot|physical|t|0/30042E0
+
+
+$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT version();
+PostgreSQL 18.3 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+
+
+$ docker image inspect postgres:18-alpine
+[
+    {
+        "Id": "sha256:4da1a4828be12604092fa55311276f08f9224a74a62dcb4708bd7439e2a03911",
+        "RepoTags": [
+            "postgres:18-alpine"
+        ],
+        "RepoDigests": [
+            "postgres@sha256:4da1a4828be12604092fa55311276f08f9224a74a62dcb4708bd7439e2a03911"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-02-26T19:25:04.079257303Z",
+        "Config": {
+            "ExposedPorts": {
+                "5432/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "GOSU_VERSION=1.19",
+                "LANG=en_US.utf8",
+                "PG_MAJOR=18",
+                "PG_VERSION=18.3",
+                "PG_SHA256=d95663fbbf3a80f81a9d98d895266bdcb74ba274bcc04ef6d76630a72dee016f",
+                "DOCKER_PG_LLVM_DEPS=llvm19-dev \t\tclang19",
+                "PGDATA=/var/lib/postgresql/18/docker"
+            ],
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "Cmd": [
+                "postgres"
+            ],
+            "Volumes": {
+                "/var/lib/postgresql": {}
+            },
+            "WorkingDir": "/",
+            "StopSignal": "SIGINT"
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 114023886,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:989e799e634906e94dc9a5ee2ee26fc92ad260522990f26e707861a5f52bf64e",
+                "sha256:90aa31bba2fdc9cd82f7fa712b02142531bc1904e009e76ca52055e78dbc68b0",
+                "sha256:d37d38dc7bc37271e032b677251d59e7629f936dfe25d322a6cfeb260f77fa48",
+                "sha256:621473536da308e036ab46c9f19afd14c13a171c926f549b38408f0372dc60a0",
+                "sha256:2f71f2457fd2397fd47cf9f6578dfcc6de78fc9ca60c09a5665f056a0083a3e4",
+                "sha256:c1a14443c55637f3775e47fcb938c782d16b8802872e53be47c53f6a2cec04e1",
+                "sha256:72daa7012c7fca7c94c3c6fb9906d9047e45f4590bcd46cace874896b927627d",
+                "sha256:a45e2fb07c2a809ed0ced067ddb6b8f24c83619120d6b628b523808067624e02",
+                "sha256:bf77ab6afa42e58e23d7348c46b15920cb7856e78aec4236cc23fc56055ce518"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-04-03T22:28:28.592651837Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:4da1a4828be12604092fa55311276f08f9224a74a62dcb4708bd7439e2a03911",
+            "size": 10293
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/library/postgres"
+                }
+            ]
+        }
+    }
+]
+
+
+$ docker container inspect markethub-p5-verified-primary
+[
+    {
+        "Id": "465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6",
+        "Created": "2026-11-12T10:45:34.292468577Z",
+        "Path": "docker-entrypoint.sh",
+        "Args": [
+            "-c",
+            "wal_level=replica",
+            "-c",
+            "max_wal_senders=5",
+            "-c",
+            "max_replication_slots=5",
+            "-c",
+            "max_slot_wal_keep_size=128MB"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 41886,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-11-12T10:46:06.537952778Z",
+            "FinishedAt": "2026-11-12T10:46:03.673829975Z"
+        },
+        "Image": "sha256:4da1a4828be12604092fa55311276f08f9224a74a62dcb4708bd7439e2a03911",
+        "ResolvConfPath": "/var/lib/docker/containers/465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6/hostname",
+        "HostsPath": "/var/lib/docker/containers/465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6/hosts",
+        "LogPath": "/var/lib/docker/containers/465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6/465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6-json.log",
+        "Name": "/markethub-p5-verified-primary",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "markethub-p5-verified-primary-data:/var/lib/postgresql"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "markethub-p5-verified-network",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": [],
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "markethub-p5-verified-primary-data",
+                "Source": "/var/lib/docker/volumes/markethub-p5-verified-primary-data/_data",
+                "Destination": "/var/lib/postgresql",
+                "Driver": "local",
+                "Mode": "z",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+        "Config": {
+            "Hostname": "465b0850fd0c",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "5432/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "POSTGRES_HOST_AUTH_METHOD=trust",
+                "POSTGRES_DB=markethub_portfolio",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "GOSU_VERSION=1.19",
+                "LANG=en_US.utf8",
+                "PG_MAJOR=18",
+                "PG_VERSION=18.3",
+                "PG_SHA256=d95663fbbf3a80f81a9d98d895266bdcb74ba274bcc04ef6d76630a72dee016f",
+                "DOCKER_PG_LLVM_DEPS=llvm19-dev \t\tclang19",
+                "PGDATA=/var/lib/postgresql/18/docker"
+            ],
+            "Cmd": [
+                "-c",
+                "wal_level=replica",
+                "-c",
+                "max_wal_senders=5",
+                "-c",
+                "max_replication_slots=5",
+                "-c",
+                "max_slot_wal_keep_size=128MB"
+            ],
+            "Image": "postgres:18-alpine",
+            "Volumes": {
+                "/var/lib/postgresql": {}
+            },
+            "WorkingDir": "/",
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "Labels": {},
+            "StopSignal": "SIGINT",
+            "StopTimeout": 1
+        },
+        "NetworkSettings": {
+            "SandboxID": "7ed56bc7f748c909dae72e7c1799395120ceabc314b1c6a74be3744e8bb22b6a",
+            "SandboxKey": "/var/run/docker/netns/7ed56bc7f748",
+            "Ports": {
+                "5432/tcp": null
+            },
+            "Networks": {
+                "markethub-p5-verified-network": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "36bde85d3ac21a8c190c1fc9fc0821e0a270d3c43dca871fa0b81e888bd2691d",
+                    "EndpointID": "3b5620e00259ef3d2af3669770bf38cb9a40c8cdb6e414e55449d2e7136af247",
+                    "Gateway": "",
+                    "IPAddress": "172.20.0.2",
+                    "MacAddress": "7e:49:c1:11:4f:84",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "markethub-p5-verified-primary",
+                        "465b0850fd0c"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:ef9e5f962db375d64c9e01bf12c41426d63c64b8cdf962daf35b60e74aa95ce5",
+            "size": 2678,
+            "annotations": {
+                "com.docker.official-images.bashbrew.arch": "amd64",
+                "org.opencontainers.image.base.digest": "sha256:59855d3dceb3ae53991193bd03301e082b2a7faa56a514b03527ae0ec2ce3a95",
+                "org.opencontainers.image.base.name": "alpine:3.23",
+                "org.opencontainers.image.created": "2026-02-26T19:22:19Z",
+                "org.opencontainers.image.revision": "6edb0a8c4def40c371514b34aef9037ec82d9110",
+                "org.opencontainers.image.source": "https://github.com/docker-library/postgres.git#6edb0a8c4def40c371514b34aef9037ec82d9110:18/alpine3.23",
+                "org.opencontainers.image.url": "https://hub.docker.com/_/postgres",
+                "org.opencontainers.image.version": "18.3-alpine3.23"
+            },
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    }
+]
+
+
+$ docker container inspect markethub-p5-verified-standby
+[
+    {
+        "Id": "044262ec56e6a2359e6432557e9c81714796807d2c8f5eea36a05e80188d346c",
+        "Created": "2026-11-12T10:45:49.134233807Z",
+        "Path": "docker-entrypoint.sh",
+        "Args": [
+            "postgres"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 41271,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-11-12T10:45:49.378822925Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:4da1a4828be12604092fa55311276f08f9224a74a62dcb4708bd7439e2a03911",
+        "ResolvConfPath": "/var/lib/docker/containers/044262ec56e6a2359e6432557e9c81714796807d2c8f5eea36a05e80188d346c/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/044262ec56e6a2359e6432557e9c81714796807d2c8f5eea36a05e80188d346c/hostname",
+        "HostsPath": "/var/lib/docker/containers/044262ec56e6a2359e6432557e9c81714796807d2c8f5eea36a05e80188d346c/hosts",
+        "LogPath": "/var/lib/docker/containers/044262ec56e6a2359e6432557e9c81714796807d2c8f5eea36a05e80188d346c/044262ec56e6a2359e6432557e9c81714796807d2c8f5eea36a05e80188d346c-json.log",
+        "Name": "/markethub-p5-verified-standby",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "markethub-p5-verified-standby-data:/var/lib/postgresql"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "markethub-p5-verified-network",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": [],
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "markethub-p5-verified-standby-data",
+                "Source": "/var/lib/docker/volumes/markethub-p5-verified-standby-data/_data",
+                "Destination": "/var/lib/postgresql",
+                "Driver": "local",
+                "Mode": "z",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+        "Config": {
+            "Hostname": "044262ec56e6",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "5432/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "GOSU_VERSION=1.19",
+                "LANG=en_US.utf8",
+                "PG_MAJOR=18",
+                "PG_VERSION=18.3",
+                "PG_SHA256=d95663fbbf3a80f81a9d98d895266bdcb74ba274bcc04ef6d76630a72dee016f",
+                "DOCKER_PG_LLVM_DEPS=llvm19-dev \t\tclang19",
+                "PGDATA=/var/lib/postgresql/18/docker"
+            ],
+            "Cmd": [
+                "postgres"
+            ],
+            "Image": "postgres:18-alpine",
+            "Volumes": {
+                "/var/lib/postgresql": {}
+            },
+            "WorkingDir": "/",
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "Labels": {},
+            "StopSignal": "SIGINT",
+            "StopTimeout": 1
+        },
+        "NetworkSettings": {
+            "SandboxID": "592088d8fb56b22190771b5718ea52bbc40f865749c920d8ecbe4b26b9ede7ae",
+            "SandboxKey": "/var/run/docker/netns/592088d8fb56",
+            "Ports": {
+                "5432/tcp": null
+            },
+            "Networks": {
+                "markethub-p5-verified-network": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "36bde85d3ac21a8c190c1fc9fc0821e0a270d3c43dca871fa0b81e888bd2691d",
+                    "EndpointID": "ae4d40c4c14af65d3906078ef457cd7272b29a50dbabe6c8daa33295badedf80",
+                    "Gateway": "",
+                    "IPAddress": "172.20.0.3",
+                    "MacAddress": "22:71:78:64:80:1a",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "markethub-p5-verified-standby",
+                        "044262ec56e6"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:ef9e5f962db375d64c9e01bf12c41426d63c64b8cdf962daf35b60e74aa95ce5",
+            "size": 2678,
+            "annotations": {
+                "com.docker.official-images.bashbrew.arch": "amd64",
+                "org.opencontainers.image.base.digest": "sha256:59855d3dceb3ae53991193bd03301e082b2a7faa56a514b03527ae0ec2ce3a95",
+                "org.opencontainers.image.base.name": "alpine:3.23",
+                "org.opencontainers.image.created": "2026-02-26T19:22:19Z",
+                "org.opencontainers.image.revision": "6edb0a8c4def40c371514b34aef9037ec82d9110",
+                "org.opencontainers.image.source": "https://github.com/docker-library/postgres.git#6edb0a8c4def40c371514b34aef9037ec82d9110:18/alpine3.23",
+                "org.opencontainers.image.url": "https://hub.docker.com/_/postgres",
+                "org.opencontainers.image.version": "18.3-alpine3.23"
+            },
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    }
+]

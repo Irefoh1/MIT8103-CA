@@ -1,0 +1,19 @@
+PASS: Primary is writable and not in recovery
+PASS: Standby is in recovery
+PASS: Primary reports one asynchronously streaming standby
+PASS: Base backup reproduces all three MarketHub products
+PASS: Standby reproduces the original NGN 35000 order total
+PASS: Standby rejects writes with read-only SQLSTATE 25006
+PASS: Standby WAL replay is deliberately paused
+PASS: Before update, both copies have the original keyboard price
+PASS: Primary commits NGN 18000 while standby replay is paused
+PASS: Standby serves stale NGN 15000 after primary has committed NGN 18000
+PASS: After replay resumes, standby converges to NGN 18000
+PASS: Replicated catalogue price update preserves historical order total
+PASS: Original primary endpoint is unavailable while stopped
+PASS: Standby continues serving the replicated catalogue during primary outage
+PASS: Standby remains read-only in recovery; no automatic failover occurs
+PASS: Primary outage does not make the standby accept checkout writes
+PASS: Standby reconnects to the restarted original primary
+PASS: Post-restart price change replicates to the standby
+PASS: Final primary and standby catalogue results match exactly
