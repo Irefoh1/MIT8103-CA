@@ -1,0 +1,5 @@
+2026-11-12T10:06:28.748617+00:00
+PostgreSQL 18.3 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+read committed
+container=markethub-p1-validation
+database=markethub_p3_verified

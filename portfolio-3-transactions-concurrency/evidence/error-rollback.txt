@@ -1,0 +1,12 @@
+BEGIN
+ checkout_one 
+--------------
+            3
+(1 row)
+
+ERROR:  23514: new row for relation "inventory" violates check constraint "inventory_quantity_on_hand_check"
+DETAIL:  Failing row contains (2, -1, 2).
+SCHEMA NAME:  markethub
+TABLE NAME:  inventory
+CONSTRAINT NAME:  inventory_quantity_on_hand_check
+LOCATION:  ExecConstraints, execMain.c:2076

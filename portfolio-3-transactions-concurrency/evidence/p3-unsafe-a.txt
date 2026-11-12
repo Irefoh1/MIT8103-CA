@@ -1,0 +1,16 @@
+
+SQL> SET application_name='p3-unsafe-a'; SET timezone='UTC'; SET statement_timeout='20s'; SET lock_timeout='15s';
+
+
+SQL> BEGIN ISOLATION LEVEL READ COMMITTED;
+
+
+SQL> SELECT quantity_on_hand FROM markethub.inventory WHERE product_id=1;
+1
+
+SQL> UPDATE markethub.inventory SET quantity_on_hand=0 WHERE product_id=1;
+    WITH o AS (INSERT INTO markethub.orders(customer_id,status,delivery_recipient,
+      delivery_address_line,delivery_city,delivery_state)
+      VALUES(1,'placed','Demo','1 Synthetic Street','Ikeja','Lagos') RETURNING order_id)
+    INSERT INTO markethub.order_items(order_id,product_id,quantity,unit_price)
+    SELECT order_id,1,1,15000 FROM o; COMMIT;

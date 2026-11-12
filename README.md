@@ -12,7 +12,7 @@ MarketHub is a simulated online retailer selling physical products to registered
 |---|---|---|
 | 1. Database design and modelling | [Portfolio 1](portfolio-1-database-design/README.md) | Schema, sample data, and five constraint checks executed successfully in PostgreSQL 18.3; student review pending |
 | 2. Query processing and optimisation | [Portfolio 2](portfolio-2-query-optimisation/README.md) | Four queries, reproducible benchmark, additional indexes, and measured evidence; student review pending |
-| 3. Transactions and concurrency | To be added | Pending |
+| 3. Transactions and concurrency | [Portfolio 3](portfolio-3-transactions-concurrency/README.md) | Commit, rollback, isolation, unsafe/protected checkout races, and 17 verified checks; student review pending |
 | 4. NoSQL and advanced data models | To be added | Pending |
 | 5. Distributed and cloud databases | To be added | Pending |
 

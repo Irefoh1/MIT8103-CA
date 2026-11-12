@@ -1,0 +1,17 @@
+
+SQL> SET application_name='p3-commit'; SET timezone='UTC'; SET statement_timeout='20s'; SET lock_timeout='15s';
+
+
+SQL> BEGIN ISOLATION LEVEL READ COMMITTED; SELECT markethub.checkout_one(1,1,2); COMMIT;
+1
+
+SQL> BEGIN; SELECT markethub.checkout_one(2,2,3);
+2
+
+SQL> SELECT quantity_on_hand FROM markethub.inventory WHERE product_id=2;
+7
+
+SQL> SELECT count(*) FROM markethub.orders;
+2
+
+SQL> ROLLBACK;

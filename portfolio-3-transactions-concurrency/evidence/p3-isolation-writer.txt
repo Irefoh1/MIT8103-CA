@@ -1,0 +1,8 @@
+
+SQL> SET application_name='p3-isolation-writer'; SET timezone='UTC'; SET statement_timeout='20s'; SET lock_timeout='15s';
+
+
+SQL> BEGIN; UPDATE markethub.inventory SET quantity_on_hand=9 WHERE product_id=1; COMMIT;
+
+
+SQL> BEGIN; UPDATE markethub.inventory SET quantity_on_hand=9 WHERE product_id=1; COMMIT;

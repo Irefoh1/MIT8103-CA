@@ -1,0 +1,17 @@
+PASS: COMMIT persists stock reduction and order across connections
+PASS: Committed item records correct quantity and purchase price
+PASS: Uncommitted checkout is visible to its own transaction
+PASS: Other connection cannot see uncommitted changes
+PASS: ROLLBACK removes order and restores stock
+PASS: Invalid negative stock raises CHECK violation SQLSTATE 23514
+PASS: Disconnect after SQL error rolls back the entire uncommitted checkout
+PASS: READ COMMITTED sees stock 10 then 9 across another session commit
+PASS: READ COMMITTED sees latest committed value in the next transaction
+PASS: REPEATABLE READ sees stock 10 then 10 across another session commit
+PASS: REPEATABLE READ sees latest committed value in the next transaction
+PASS: Unsafe sessions both read the same final unit
+PASS: Unsafe stale writes create two orders for one unit while nonnegative-stock CHECK still passes
+PASS: PostgreSQL reports the competing checkout blocked by the first transaction
+PASS: Second safe checkout rejects insufficient stock after waiting
+PASS: Protected race ends with exactly one sold unit, one order, and zero stock
+PASS: Checkout rejects zero quantity
