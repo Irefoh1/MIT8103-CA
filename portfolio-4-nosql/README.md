@@ -63,10 +63,6 @@ All modifications occur only in MongoDB's separate snapshot. The keyboard's back
 
 The execution and check summaries show real MongoDB operations. Index and collection-options files preserve the actual definitions; the SKU execution plan records examined documents and returned rows. Three documents are sufficient to demonstrate the model and index access, but do not establish performance benefits at scale. There is no timing-speedup claim.
 
-## Student review and reflection
-
-Review why a notebook and keyboard can have different attributes, why category details are embedded, and why money uses Decimal128. Inspect the rejected-write evidence and understand the distinction between uniqueness and schema validation. Explain why snapshot catalogue data must not determine live checkout stock. Add your own reflection after review or execution; screenshots can supplement the saved outputs. Nothing is committed or pushed automatically.
-
 ## Source and AI-use record
 
 Case-study source: the existing MarketHub P1 schema and seed data. Assessment source: MIT 8103 assignment brief, Portfolio 4 expected evidence (NoSQL model using the same case study, implementation evidence, and suitability explanation).

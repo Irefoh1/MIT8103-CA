@@ -64,11 +64,7 @@ Create an `evidence/` folder and save actual evidence showing:
 
 **Current verification status:** On 18 October 2026, the schema and sample scripts executed successfully in PostgreSQL 18.3 using the local Docker image `postgres:18-alpine`. The query returned NGN 35,000.00; stock balances were 18 keyboards, 49 mice, and 100 notebooks. All five rejection checks passed. Actual output is saved in [execution evidence](evidence/postgresql-execution.txt) and [constraint evidence](evidence/constraint-checks.txt). The isolated container is named `markethub-p1-validation`; it has no network connectivity or published ports. Student review, reflection, and any desired screenshots remain pending. These checks do not establish concurrency correctness or validate unimplemented workflow rules.
 
-## 6. Reflection prompts
-
-Write your own short reflection after running the scripts: Why separate orders and order items? Why preserve purchase prices and delivery addresses? Which rules are enforced by SQL and which require transactions? What did you change or correct while testing?
-
-## 7. References and AI-use record
+## 6. References and AI-use record
 
 - Course assignment brief: MIT 8103 Advanced Database Systems, 2026/2027 First Semester Continuous Assessment, sections 2–5, 7–9, and 11–12.
 - AI assistance: OpenAI Codex helped prepare the initial design, SQL, and documentation. Student review, corrections, and execution results are pending and must be recorded truthfully before submission.

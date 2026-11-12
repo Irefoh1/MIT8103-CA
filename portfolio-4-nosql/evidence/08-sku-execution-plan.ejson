@@ -1,7 +1,7 @@
 {
   "explainVersion": "1",
   "queryPlanner": {
-    "namespace": "markethub_p4.products",
+    "namespace": "markethub_p4_review.products",
     "parsedQuery": {
       "sku": {
         "$eq": "KB-001"
@@ -32,7 +32,7 @@
       "$numberInt": "1"
     },
     "executionTimeMillis": {
-      "$numberInt": "0"
+      "$numberInt": "1"
     },
     "totalKeysExamined": {
       "$numberInt": "1"
@@ -56,16 +56,16 @@
       }
     }
   },
-  "queryShapeHash": "EAB3F5C3C790416B28D3ACD991E4E6372EB17DD4EED4F84FB748552FCEAB3585",
+  "queryShapeHash": "EF446500EE8FC7E4BA4242B89AFAA937B7A101DDBE9391EE657C40F23BFF4CB7",
   "command": {
     "find": "products",
     "filter": {
       "sku": "KB-001"
     },
-    "$db": "markethub_p4"
+    "$db": "markethub_p4_review"
   },
   "serverInfo": {
-    "host": "85f6a35d6cbf",
+    "host": "8d9f88ba40c3",
     "port": {
       "$numberInt": "27017"
     },

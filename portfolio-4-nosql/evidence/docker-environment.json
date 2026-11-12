@@ -1,5 +1,5 @@
 {
-  "container": "markethub-p4-mongo",
+  "container": "markethub-p4-review",
   "image_id": "sha256:d97fea17ccb8d004cd137be8dab54d70d0df11be69c9f422aefe4484c8414ab7",
   "repo_digests": [
     "mongo@sha256:d97fea17ccb8d004cd137be8dab54d70d0df11be69c9f422aefe4484c8414ab7"

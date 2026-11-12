@@ -9,11 +9,11 @@
       "Relation Name": "orders",
       "Alias": "orders",
       "Startup Cost": 0.41,
-      "Total Cost": 8.29,
-      "Plan Rows": 194,
+      "Total Cost": 8.23,
+      "Plan Rows": 191,
       "Plan Width": 24,
-      "Actual Startup Time": 0.099,
-      "Actual Total Time": 0.206,
+      "Actual Startup Time": 0.052,
+      "Actual Total Time": 0.092,
       "Actual Rows": 198.0,
       "Actual Loops": 1,
       "Disabled": false,
@@ -44,9 +44,9 @@
       "Temp Read Blocks": 0,
       "Temp Written Blocks": 0
     },
-    "Planning Time": 4.575,
+    "Planning Time": 2.01,
     "Triggers": [],
-    "Execution Time": 0.356
+    "Execution Time": 0.181
   },
   {
     "Plan": {
@@ -58,11 +58,11 @@
       "Relation Name": "orders",
       "Alias": "orders",
       "Startup Cost": 0.41,
-      "Total Cost": 8.29,
-      "Plan Rows": 194,
+      "Total Cost": 8.23,
+      "Plan Rows": 191,
       "Plan Width": 24,
-      "Actual Startup Time": 0.269,
-      "Actual Total Time": 0.324,
+      "Actual Startup Time": 0.048,
+      "Actual Total Time": 0.083,
       "Actual Rows": 198.0,
       "Actual Loops": 1,
       "Disabled": false,
@@ -93,9 +93,9 @@
       "Temp Read Blocks": 0,
       "Temp Written Blocks": 0
     },
-    "Planning Time": 3.069,
+    "Planning Time": 1.724,
     "Triggers": [],
-    "Execution Time": 0.479
+    "Execution Time": 0.147
   },
   {
     "Plan": {
@@ -107,11 +107,11 @@
       "Relation Name": "orders",
       "Alias": "orders",
       "Startup Cost": 0.41,
-      "Total Cost": 8.29,
-      "Plan Rows": 194,
+      "Total Cost": 8.23,
+      "Plan Rows": 191,
       "Plan Width": 24,
-      "Actual Startup Time": 0.066,
-      "Actual Total Time": 0.118,
+      "Actual Startup Time": 0.038,
+      "Actual Total Time": 0.07,
       "Actual Rows": 198.0,
       "Actual Loops": 1,
       "Disabled": false,
@@ -142,9 +142,9 @@
       "Temp Read Blocks": 0,
       "Temp Written Blocks": 0
     },
-    "Planning Time": 4.26,
+    "Planning Time": 1.774,
     "Triggers": [],
-    "Execution Time": 0.231
+    "Execution Time": 0.127
   },
   {
     "Plan": {
@@ -156,11 +156,11 @@
       "Relation Name": "orders",
       "Alias": "orders",
       "Startup Cost": 0.41,
-      "Total Cost": 8.29,
-      "Plan Rows": 194,
+      "Total Cost": 8.23,
+      "Plan Rows": 191,
       "Plan Width": 24,
-      "Actual Startup Time": 0.082,
-      "Actual Total Time": 0.161,
+      "Actual Startup Time": 0.035,
+      "Actual Total Time": 0.066,
       "Actual Rows": 198.0,
       "Actual Loops": 1,
       "Disabled": false,
@@ -191,9 +191,9 @@
       "Temp Read Blocks": 0,
       "Temp Written Blocks": 0
     },
-    "Planning Time": 4.016,
+    "Planning Time": 1.508,
     "Triggers": [],
-    "Execution Time": 0.283
+    "Execution Time": 0.121
   },
   {
     "Plan": {
@@ -205,11 +205,11 @@
       "Relation Name": "orders",
       "Alias": "orders",
       "Startup Cost": 0.41,
-      "Total Cost": 8.29,
-      "Plan Rows": 194,
+      "Total Cost": 8.23,
+      "Plan Rows": 191,
       "Plan Width": 24,
-      "Actual Startup Time": 0.057,
-      "Actual Total Time": 0.111,
+      "Actual Startup Time": 0.045,
+      "Actual Total Time": 0.078,
       "Actual Rows": 198.0,
       "Actual Loops": 1,
       "Disabled": false,
@@ -240,8 +240,8 @@
       "Temp Read Blocks": 0,
       "Temp Written Blocks": 0
     },
-    "Planning Time": 3.002,
+    "Planning Time": 1.918,
     "Triggers": [],
-    "Execution Time": 0.206
+    "Execution Time": 0.139
   }
 ]

@@ -68,6 +68,4 @@ Indexes consume storage and make inserts and indexed-column updates more expensi
 
 ## Student review and submission
 
-Read the plans and explain why each index is useful or ineffective. Add your own reflection covering what you observed, challenges, and lessons. Text/JSON plans and CSV outputs are genuine technical evidence; screenshots can supplement them. Commit this directory and the updated root README progressively to the private GitHub repository. Keep temporary files excluded.
-
 Reference: MIT 8103 assignment brief, Portfolio 2 expected deliverables. AI assistance: OpenAI Codex prepared the queries, data generator, benchmark runner, and initial analysis and executed the lab. The student must review the scripts, understand the measurements, document personal verification/corrections, and include the final AI-use declaration. No personal reflection is fabricated here.

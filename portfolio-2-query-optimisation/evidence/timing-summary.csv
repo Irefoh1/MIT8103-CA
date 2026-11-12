@@ -1,5 +1,5 @@
 query,before_median_ms,after_median_ms,speedup,reduction_percent
-q1-customer-history,2.166,0.848,2.55,60.85
-q2-paid-orders-by-date,13.633,0.283,48.17,97.92
-q3-low-stock,0.921,1.243,0.74,-34.96
-q4-top-products,619.753,647.85,0.96,-4.53
+q1-customer-history,0.987,0.526,1.88,46.71
+q2-paid-orders-by-date,9.233,0.139,66.42,98.49
+q3-low-stock,0.509,0.801,0.64,-57.37
+q4-top-products,306.928,315.793,0.97,-2.89

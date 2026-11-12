@@ -1,20 +1,20 @@
-Sort  (cost=52.27..53.10 rows=333 width=37) (actual time=0.612..0.617 rows=10.00 loops=1)
+Sort  (cost=52.27..53.10 rows=333 width=37) (actual time=0.264..0.266 rows=10.00 loops=1)
   Sort Key: i.product_id
   Sort Method: quicksort  Memory: 25kB
   Buffers: shared hit=15
-  ->  Hash Join  (cost=15.68..38.31 rows=333 width=37) (actual time=0.187..0.502 rows=10.00 loops=1)
+  ->  Hash Join  (cost=15.68..38.31 rows=333 width=37) (actual time=0.075..0.221 rows=10.00 loops=1)
         Hash Cond: (p.product_id = i.product_id)
         Buffers: shared hit=12
-        ->  Seq Scan on products p  (cost=0.00..20.00 rows=1000 width=29) (actual time=0.022..0.158 rows=1000.00 loops=1)
+        ->  Seq Scan on products p  (cost=0.00..20.00 rows=1000 width=29) (actual time=0.014..0.092 rows=1000.00 loops=1)
               Buffers: shared hit=10
-        ->  Hash  (cost=11.52..11.52 rows=333 width=16) (actual time=0.087..0.088 rows=10.00 loops=1)
+        ->  Hash  (cost=11.52..11.52 rows=333 width=16) (actual time=0.030..0.030 rows=10.00 loops=1)
               Buckets: 1024  Batches: 1  Memory Usage: 9kB
               Buffers: shared hit=2
-              ->  Index Only Scan using p2_inventory_low_stock_idx on inventory i  (cost=0.14..11.52 rows=333 width=16) (actual time=0.049..0.053 rows=10.00 loops=1)
+              ->  Index Only Scan using p2_inventory_low_stock_idx on inventory i  (cost=0.14..11.52 rows=333 width=16) (actual time=0.014..0.015 rows=10.00 loops=1)
                     Heap Fetches: 0
                     Index Searches: 1
                     Buffers: shared hit=2
 Planning:
   Buffers: shared hit=193
-Planning Time: 5.315 ms
-Execution Time: 1.073 ms
+Planning Time: 2.234 ms
+Execution Time: 0.443 ms

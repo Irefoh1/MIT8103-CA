@@ -48,10 +48,6 @@ Use `--container NAME` for another PostgreSQL container. A repeated run replaces
 
 The runner coordinates transaction boundaries explicitly rather than relying on arbitrary delays to create a race. It observes the actual blocker through `pg_blocking_pids`, enforces timeouts, and verifies final database state. The checkout quantity guard is also tested.
 
-## Review before submission
-
-Read [technical-analysis.md](technical-analysis.md), inspect the session logs, and reproduce the two-terminal guide if useful. Explain why a negative-stock CHECK is insufficient and why a conditional decrement works under Read Committed. Add your own reflection about decisions, challenges, and lessons; screenshots can supplement the text evidence. Commit the P3 directory and updated root README to your private repository when reviewed. Nothing is committed or pushed by the lab runner.
-
 ## Sources and AI-use declaration
 
 Course source: MIT 8103 assignment brief, Portfolio 3: transaction examples showing commit, rollback, isolation, a concurrency issue or control mechanism, and screenshots/output evidence.

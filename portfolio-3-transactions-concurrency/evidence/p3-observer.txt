@@ -79,4 +79,3 @@ SQL> DO $$ BEGIN
       PERFORM markethub.checkout_one(1,1,0);
       RAISE EXCEPTION 'Guard failed';
     EXCEPTION WHEN SQLSTATE '22023' THEN RAISE NOTICE 'EXPECTED: positive quantity required'; END $$;
-NOTICE:  EXPECTED: positive quantity required

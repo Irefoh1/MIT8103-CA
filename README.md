@@ -20,6 +20,4 @@ See the [cross-portfolio roadmap](portfolio-roadmap.md) for how this design supp
 
 ## Submission notes
 
-Keep the eventual GitHub repository private and grant the assessor access. Commit genuine progress as work is completed. Do not claim unexecuted scripts or illustrative outputs as tested evidence.
-
 AI assistance was used to prepare the initial case study, database design, SQL, and explanations. Before submission, the student must review and understand the work, execute the scripts, document corrections and actual results, and personalise the technical reflection and AI-use declaration.

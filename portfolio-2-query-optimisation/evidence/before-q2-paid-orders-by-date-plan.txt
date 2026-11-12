@@ -1,12 +1,12 @@
-Sort  (cost=3289.64..3290.14 rows=200 width=24) (actual time=15.568..15.589 rows=198.00 loops=1)
+Sort  (cost=3289.55..3290.05 rows=198 width=24) (actual time=7.447..7.457 rows=198.00 loops=1)
   Sort Key: ordered_at, order_id
   Sort Method: quicksort  Memory: 32kB
   Buffers: shared hit=1538
-  ->  Seq Scan on orders  (cost=0.00..3282.00 rows=200 width=24) (actual time=0.351..15.146 rows=198.00 loops=1)
+  ->  Seq Scan on orders  (cost=0.00..3282.00 rows=198 width=24) (actual time=0.213..7.312 rows=198.00 loops=1)
         Filter: ((ordered_at >= '2026-07-15 00:00:00+00'::timestamp with time zone) AND (ordered_at < '2026-07-16 00:00:00+00'::timestamp with time zone) AND ((status)::text = 'paid'::text))
         Rows Removed by Filter: 99802
         Buffers: shared hit=1532
 Planning:
   Buffers: shared hit=112
-Planning Time: 2.004 ms
-Execution Time: 15.680 ms
+Planning Time: 1.174 ms
+Execution Time: 7.509 ms

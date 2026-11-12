@@ -1,20 +1,20 @@
-Sort  (cost=59.25..60.08 rows=333 width=37) (actual time=0.621..0.625 rows=10.00 loops=1)
+Sort  (cost=59.25..60.08 rows=333 width=37) (actual time=0.608..0.613 rows=10.00 loops=1)
   Sort Key: i.product_id
   Sort Method: quicksort  Memory: 25kB
   Buffers: shared hit=19
-  ->  Hash Join  (cost=22.66..45.30 rows=333 width=37) (actual time=0.235..0.533 rows=10.00 loops=1)
+  ->  Hash Join  (cost=22.66..45.30 rows=333 width=37) (actual time=0.248..0.504 rows=10.00 loops=1)
         Hash Cond: (p.product_id = i.product_id)
         Buffers: shared hit=16
-        ->  Seq Scan on products p  (cost=0.00..20.00 rows=1000 width=29) (actual time=0.015..0.146 rows=1000.00 loops=1)
+        ->  Seq Scan on products p  (cost=0.00..20.00 rows=1000 width=29) (actual time=0.031..0.140 rows=1000.00 loops=1)
               Buffers: shared hit=10
-        ->  Hash  (cost=18.50..18.50 rows=333 width=16) (actual time=0.156..0.157 rows=10.00 loops=1)
+        ->  Hash  (cost=18.50..18.50 rows=333 width=16) (actual time=0.147..0.147 rows=10.00 loops=1)
               Buckets: 1024  Batches: 1  Memory Usage: 9kB
               Buffers: shared hit=6
-              ->  Seq Scan on inventory i  (cost=0.00..18.50 rows=333 width=16) (actual time=0.019..0.134 rows=10.00 loops=1)
+              ->  Seq Scan on inventory i  (cost=0.00..18.50 rows=333 width=16) (actual time=0.025..0.115 rows=10.00 loops=1)
                     Filter: (quantity_on_hand < reorder_level)
                     Rows Removed by Filter: 990
                     Buffers: shared hit=6
 Planning:
   Buffers: shared hit=174
-Planning Time: 4.313 ms
-Execution Time: 0.985 ms
+Planning Time: 3.938 ms
+Execution Time: 1.045 ms

@@ -1,81 +1,69 @@
-$ docker container inspect markethub-p5-verified-primary
+$ docker container inspect markethub-p5-review-primary
 []
-Error response from daemon: No such container: markethub-p5-verified-primary
+Error response from daemon: No such container: markethub-p5-review-primary
 
 
-$ docker container inspect markethub-p5-verified-standby
+$ docker container inspect markethub-p5-review-standby
 []
-Error response from daemon: No such container: markethub-p5-verified-standby
+Error response from daemon: No such container: markethub-p5-review-standby
 
 
-$ docker network inspect markethub-p5-verified-network
+$ docker network inspect markethub-p5-review-network
 []
-Error response from daemon: network markethub-p5-verified-network not found
+Error response from daemon: network markethub-p5-review-network not found
 
 
-$ docker volume inspect markethub-p5-verified-primary-data
+$ docker volume inspect markethub-p5-review-primary-data
 []
-Error response from daemon: get markethub-p5-verified-primary-data: no such volume
+Error response from daemon: get markethub-p5-review-primary-data: no such volume
 
 
-$ docker volume inspect markethub-p5-verified-standby-data
+$ docker volume inspect markethub-p5-review-standby-data
 []
-Error response from daemon: get markethub-p5-verified-standby-data: no such volume
+Error response from daemon: get markethub-p5-review-standby-data: no such volume
 
 
-$ docker network create --internal markethub-p5-verified-network
-36bde85d3ac21a8c190c1fc9fc0821e0a270d3c43dca871fa0b81e888bd2691d
+$ docker network create --internal markethub-p5-review-network
+faa187efd01cf71361f038e013cbcf182e1df0165b496ff8ff06faf5add2e180
 
 
-$ docker volume create markethub-p5-verified-primary-data
-markethub-p5-verified-primary-data
+$ docker volume create markethub-p5-review-primary-data
+markethub-p5-review-primary-data
 
 
-$ docker volume create markethub-p5-verified-standby-data
-markethub-p5-verified-standby-data
+$ docker volume create markethub-p5-review-standby-data
+markethub-p5-review-standby-data
 
 
-$ docker run --detach --name markethub-p5-verified-primary --network markethub-p5-verified-network -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGRES_DB=markethub_portfolio -v markethub-p5-verified-primary-data:/var/lib/postgresql postgres:18-alpine -c wal_level=replica -c max_wal_senders=5 -c max_replication_slots=5 -c max_slot_wal_keep_size=128MB
-465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6
+$ docker run --detach --name markethub-p5-review-primary --network markethub-p5-review-network -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGRES_DB=markethub_portfolio -v markethub-p5-review-primary-data:/var/lib/postgresql postgres:18-alpine -c wal_level=replica -c max_wal_senders=5 -c max_replication_slots=5 -c max_slot_wal_keep_size=128MB
+9732fdef21e5990fb7550f159bb363ee2fc126c1ee0a0462de34386c30cdfdb2
 
 
-$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+$ docker exec markethub-p5-review-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
 127.0.0.1:5432 - no response
 
 
-$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+$ docker exec markethub-p5-review-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
 127.0.0.1:5432 - no response
 
 
-$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+$ docker exec markethub-p5-review-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
 127.0.0.1:5432 - no response
 
 
-$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+$ docker exec markethub-p5-review-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
 127.0.0.1:5432 - no response
 
 
-$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+$ docker exec markethub-p5-review-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
 127.0.0.1:5432 - no response
 
 
-$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
-127.0.0.1:5432 - no response
-
-
-$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
-127.0.0.1:5432 - no response
-
-
-$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
-127.0.0.1:5432 - no response
-
-
-$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+$ docker exec markethub-p5-review-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
 127.0.0.1:5432 - accepting connections
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 -- PostgreSQL; run once in a fresh practice database.
 BEGIN;
@@ -207,7 +195,7 @@ CREATE INDEX
 COMMIT
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 -- Synthetic educational data. Run after schema.sql in a fresh database.
 BEGIN;
@@ -288,67 +276,67 @@ failed|1
 successful|1
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 CREATE ROLE replicator WITH LOGIN REPLICATION;
 CREATE ROLE
 
 
-$ docker exec markethub-p5-verified-primary sh -c echo "host replication replicator 0.0.0.0/0 trust" >> "$PGDATA/pg_hba.conf"
+$ docker exec markethub-p5-review-primary sh -c echo "host replication replicator 0.0.0.0/0 trust" >> "$PGDATA/pg_hba.conf"
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT pg_reload_conf();
 t
 
 
-$ docker run --rm --network markethub-p5-verified-network -e PGDATA=/var/lib/postgresql/18/docker -e PGHOST=markethub-p5-verified-primary -e PGUSER=replicator -v markethub-p5-verified-standby-data:/var/lib/postgresql --entrypoint sh postgres:18-alpine -c mkdir -p "$PGDATA" && chown postgres:postgres "$PGDATA" && chmod 700 "$PGDATA" && gosu postgres pg_basebackup -D "$PGDATA" -R -X stream -C -S p5_standby_slot --checkpoint=fast
+$ docker run --rm --network markethub-p5-review-network -e PGDATA=/var/lib/postgresql/18/docker -e PGHOST=markethub-p5-review-primary -e PGUSER=replicator -v markethub-p5-review-standby-data:/var/lib/postgresql --entrypoint sh postgres:18-alpine -c mkdir -p "$PGDATA" && chown postgres:postgres "$PGDATA" && chmod 700 "$PGDATA" && gosu postgres pg_basebackup -D "$PGDATA" -R -X stream -C -S p5_standby_slot --checkpoint=fast
 
 
-$ docker run --detach --name markethub-p5-verified-standby --network markethub-p5-verified-network -v markethub-p5-verified-standby-data:/var/lib/postgresql postgres:18-alpine
-044262ec56e6a2359e6432557e9c81714796807d2c8f5eea36a05e80188d346c
+$ docker run --detach --name markethub-p5-review-standby --network markethub-p5-review-network -v markethub-p5-review-standby-data:/var/lib/postgresql postgres:18-alpine
+5fc87c2e00dcb2aa11c6bfd1923a6e8739f3feb5e4e8172b31b51c6d3f9665f9
 
 
-$ docker exec markethub-p5-verified-standby pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+$ docker exec markethub-p5-review-standby pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
 127.0.0.1:5432 - rejecting connections
 
 
-$ docker exec markethub-p5-verified-standby pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+$ docker exec markethub-p5-review-standby pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
 127.0.0.1:5432 - accepting connections
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT pg_is_in_recovery();
 f
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT pg_is_in_recovery();
 t
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT count(*) FROM pg_stat_replication WHERE state='streaming' AND sync_state='async';
 1
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT count(*) FROM markethub.products;
 3
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT sum(quantity*unit_price) FROM markethub.order_items;
 35000.00
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT name,setting,unit FROM pg_settings WHERE name IN
     ('wal_level','max_wal_senders','max_replication_slots','max_slot_wal_keep_size',
@@ -362,7 +350,7 @@ synchronous_standby_names||
 wal_level|replica|
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT name,setting,unit FROM pg_settings WHERE name IN
     ('wal_level','max_wal_senders','max_replication_slots','max_slot_wal_keep_size',
@@ -376,7 +364,7 @@ synchronous_standby_names||
 wal_level|replica|
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT application_name,state,sync_state,sent_lsn,write_lsn,flush_lsn,replay_lsn
     FROM pg_stat_replication; SELECT slot_name,slot_type,active,restart_lsn FROM pg_replication_slots;
@@ -384,38 +372,38 @@ walreceiver|streaming|async|0/3000000|0/3000000|0/3000000|0/3000000
 p5_standby_slot|physical|t|0/3000000
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 UPDATE markethub.products SET current_price=1 WHERE sku='KB-001';
 ERROR:  25006: cannot execute UPDATE in a read-only transaction
 LOCATION:  PreventCommandIfReadOnly, utility.c:407
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT pg_wal_replay_pause();
 
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT pg_get_wal_replay_pause_state();
 paused
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT current_price FROM markethub.products WHERE sku='KB-001';
 15000.00
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT current_price FROM markethub.products WHERE sku='KB-001';
 15000.00
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 BEGIN;
     UPDATE markethub.products SET current_price=18000 WHERE sku='KB-001';
@@ -426,50 +414,50 @@ BEGIN
 UPDATE 1
 COMMIT
 18000.00
-0/30001F8
+0/30001C0
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT current_price FROM markethub.products WHERE sku='KB-001';
 18000.00
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT sku,current_price FROM markethub.products WHERE sku='KB-001';
     SELECT pg_last_wal_receive_lsn(),pg_last_wal_replay_lsn(),pg_get_wal_replay_pause_state();
 KB-001|15000.00
-0/30001F8|0/3000000|paused
+0/30001C0|0/3000000|paused
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT pg_wal_replay_resume();
 
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT current_price FROM markethub.products WHERE sku='KB-001';
 18000.00
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT sum(quantity*unit_price) FROM markethub.order_items;
 35000.00
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT application_name,state,sync_state,sent_lsn,write_lsn,flush_lsn,replay_lsn
     FROM pg_stat_replication; SELECT slot_name,slot_type,active,restart_lsn FROM pg_replication_slots;
-walreceiver|streaming|async|0/30001F8|0/30001F8|0/30001F8|0/30001F8
-p5_standby_slot|physical|t|0/30001F8
+walreceiver|streaming|async|0/30001C0|0/30001C0|0/30001C0|0/30001C0
+p5_standby_slot|physical|t|0/30001C0
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT sku,current_price FROM markethub.products ORDER BY sku;
 KB-001|18000.00
@@ -477,67 +465,85 @@ MS-001|5000.00
 NB-001|2000.00
 
 
-$ docker stop --time 20 markethub-p5-verified-primary
+$ docker stop --time 20 markethub-p5-review-primary
 Flag --time has been deprecated, use --timeout instead
-markethub-p5-verified-primary
+markethub-p5-review-primary
 
 
-$ docker exec markethub-p5-verified-primary pg_isready -U postgres
-Error response from daemon: container 465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6 is not running
+$ docker exec markethub-p5-review-primary pg_isready -U postgres
+Error response from daemon: container 9732fdef21e5990fb7550f159bb363ee2fc126c1ee0a0462de34386c30cdfdb2 is not running
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT current_price FROM markethub.products WHERE sku='KB-001';
 18000.00
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT pg_is_in_recovery();
 t
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 UPDATE markethub.products SET current_price=19000 WHERE sku='KB-001';
 ERROR:  25006: cannot execute UPDATE in a read-only transaction
 LOCATION:  PreventCommandIfReadOnly, utility.c:407
 
 
-$ docker start markethub-p5-verified-primary
-markethub-p5-verified-primary
+$ docker start markethub-p5-review-primary
+markethub-p5-review-primary
 
 
-$ docker exec markethub-p5-verified-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
+$ docker exec markethub-p5-review-primary pg_isready -h 127.0.0.1 -U postgres -d markethub_portfolio
 127.0.0.1:5432 - accepting connections
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT count(*) FROM pg_stat_replication WHERE state='streaming';
 0
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT count(*) FROM pg_stat_replication WHERE state='streaming';
+0
+
+
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT count(*) FROM pg_stat_replication WHERE state='streaming';
+0
+
+
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+STDIN>
+SELECT count(*) FROM pg_stat_replication WHERE state='streaming';
+0
+
+
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT count(*) FROM pg_stat_replication WHERE state='streaming';
 1
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 UPDATE markethub.products SET current_price=5500 WHERE sku='MS-001';
 UPDATE 1
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT current_price FROM markethub.products WHERE sku='MS-001';
 5500.00
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT sku,current_price FROM markethub.products ORDER BY sku;
 KB-001|18000.00
@@ -545,7 +551,7 @@ MS-001|5500.00
 NB-001|2000.00
 
 
-$ docker exec -i markethub-p5-verified-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-standby psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT sku,current_price FROM markethub.products ORDER BY sku;
 KB-001|18000.00
@@ -553,15 +559,15 @@ MS-001|5500.00
 NB-001|2000.00
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT application_name,state,sync_state,sent_lsn,write_lsn,flush_lsn,replay_lsn
     FROM pg_stat_replication; SELECT slot_name,slot_type,active,restart_lsn FROM pg_replication_slots;
-walreceiver|streaming|async|0/30042E0|0/30042E0|0/30042E0|0/30042E0
-p5_standby_slot|physical|t|0/30042E0
+walreceiver|streaming|async|0/30042A8|0/30042A8|0/30042A8|0/30042A8
+p5_standby_slot|physical|t|0/30042A8
 
 
-$ docker exec -i markethub-p5-verified-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
+$ docker exec -i markethub-p5-review-primary psql -XAt -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -U postgres -d markethub_portfolio
 STDIN>
 SELECT version();
 PostgreSQL 18.3 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
@@ -641,11 +647,11 @@ $ docker image inspect postgres:18-alpine
 ]
 
 
-$ docker container inspect markethub-p5-verified-primary
+$ docker container inspect markethub-p5-review-primary
 [
     {
-        "Id": "465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6",
-        "Created": "2026-11-12T10:45:34.292468577Z",
+        "Id": "9732fdef21e5990fb7550f159bb363ee2fc126c1ee0a0462de34386c30cdfdb2",
+        "Created": "2026-11-12T13:41:05.056968198Z",
         "Path": "docker-entrypoint.sh",
         "Args": [
             "-c",
@@ -664,18 +670,18 @@ $ docker container inspect markethub-p5-verified-primary
             "Restarting": false,
             "OOMKilled": false,
             "Dead": false,
-            "Pid": 41886,
+            "Pid": 47565,
             "ExitCode": 0,
             "Error": "",
-            "StartedAt": "2026-11-12T10:46:06.537952778Z",
-            "FinishedAt": "2026-11-12T10:46:03.673829975Z"
+            "StartedAt": "2026-11-12T13:41:19.265590069Z",
+            "FinishedAt": "2026-11-12T13:41:17.654796841Z"
         },
         "Image": "sha256:4da1a4828be12604092fa55311276f08f9224a74a62dcb4708bd7439e2a03911",
-        "ResolvConfPath": "/var/lib/docker/containers/465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6/resolv.conf",
-        "HostnamePath": "/var/lib/docker/containers/465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6/hostname",
-        "HostsPath": "/var/lib/docker/containers/465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6/hosts",
-        "LogPath": "/var/lib/docker/containers/465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6/465b0850fd0c8950b327a735ca7d5b5020769a0f89f7ebda902df1018cb50cc6-json.log",
-        "Name": "/markethub-p5-verified-primary",
+        "ResolvConfPath": "/var/lib/docker/containers/9732fdef21e5990fb7550f159bb363ee2fc126c1ee0a0462de34386c30cdfdb2/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/9732fdef21e5990fb7550f159bb363ee2fc126c1ee0a0462de34386c30cdfdb2/hostname",
+        "HostsPath": "/var/lib/docker/containers/9732fdef21e5990fb7550f159bb363ee2fc126c1ee0a0462de34386c30cdfdb2/hosts",
+        "LogPath": "/var/lib/docker/containers/9732fdef21e5990fb7550f159bb363ee2fc126c1ee0a0462de34386c30cdfdb2/9732fdef21e5990fb7550f159bb363ee2fc126c1ee0a0462de34386c30cdfdb2-json.log",
+        "Name": "/markethub-p5-review-primary",
         "RestartCount": 0,
         "Driver": "overlayfs",
         "Platform": "linux",
@@ -685,14 +691,14 @@ $ docker container inspect markethub-p5-verified-primary
         "ExecIDs": null,
         "HostConfig": {
             "Binds": [
-                "markethub-p5-verified-primary-data:/var/lib/postgresql"
+                "markethub-p5-review-primary-data:/var/lib/postgresql"
             ],
             "ContainerIDFile": "",
             "LogConfig": {
                 "Type": "json-file",
                 "Config": {}
             },
-            "NetworkMode": "markethub-p5-verified-network",
+            "NetworkMode": "markethub-p5-review-network",
             "PortBindings": {},
             "RestartPolicy": {
                 "Name": "no",
@@ -788,8 +794,8 @@ $ docker container inspect markethub-p5-verified-primary
         "Mounts": [
             {
                 "Type": "volume",
-                "Name": "markethub-p5-verified-primary-data",
-                "Source": "/var/lib/docker/volumes/markethub-p5-verified-primary-data/_data",
+                "Name": "markethub-p5-review-primary-data",
+                "Source": "/var/lib/docker/volumes/markethub-p5-review-primary-data/_data",
                 "Destination": "/var/lib/postgresql",
                 "Driver": "local",
                 "Mode": "z",
@@ -798,7 +804,7 @@ $ docker container inspect markethub-p5-verified-primary
             }
         ],
         "Config": {
-            "Hostname": "465b0850fd0c",
+            "Hostname": "9732fdef21e5",
             "Domainname": "",
             "User": "",
             "AttachStdin": false,
@@ -845,30 +851,30 @@ $ docker container inspect markethub-p5-verified-primary
             "StopTimeout": 1
         },
         "NetworkSettings": {
-            "SandboxID": "7ed56bc7f748c909dae72e7c1799395120ceabc314b1c6a74be3744e8bb22b6a",
-            "SandboxKey": "/var/run/docker/netns/7ed56bc7f748",
+            "SandboxID": "c25f709d926bc989534c675ee4d27703c9d4446a1fadcd490085796361ee6603",
+            "SandboxKey": "/var/run/docker/netns/c25f709d926b",
             "Ports": {
                 "5432/tcp": null
             },
             "Networks": {
-                "markethub-p5-verified-network": {
+                "markethub-p5-review-network": {
                     "IPAMConfig": null,
                     "Links": null,
                     "Aliases": null,
                     "DriverOpts": null,
                     "GwPriority": 0,
-                    "NetworkID": "36bde85d3ac21a8c190c1fc9fc0821e0a270d3c43dca871fa0b81e888bd2691d",
-                    "EndpointID": "3b5620e00259ef3d2af3669770bf38cb9a40c8cdb6e414e55449d2e7136af247",
+                    "NetworkID": "faa187efd01cf71361f038e013cbcf182e1df0165b496ff8ff06faf5add2e180",
+                    "EndpointID": "f496a46097c138e56afd6851cae54b475450bf9c74ddb82db69f4b7f4de53acf",
                     "Gateway": "",
-                    "IPAddress": "172.20.0.2",
-                    "MacAddress": "7e:49:c1:11:4f:84",
+                    "IPAddress": "172.21.0.2",
+                    "MacAddress": "2a:b2:96:5e:de:aa",
                     "IPPrefixLen": 16,
                     "IPv6Gateway": "",
                     "GlobalIPv6Address": "",
                     "GlobalIPv6PrefixLen": 0,
                     "DNSNames": [
-                        "markethub-p5-verified-primary",
-                        "465b0850fd0c"
+                        "markethub-p5-review-primary",
+                        "9732fdef21e5"
                     ]
                 }
             }
@@ -896,11 +902,11 @@ $ docker container inspect markethub-p5-verified-primary
 ]
 
 
-$ docker container inspect markethub-p5-verified-standby
+$ docker container inspect markethub-p5-review-standby
 [
     {
-        "Id": "044262ec56e6a2359e6432557e9c81714796807d2c8f5eea36a05e80188d346c",
-        "Created": "2026-11-12T10:45:49.134233807Z",
+        "Id": "5fc87c2e00dcb2aa11c6bfd1923a6e8739f3feb5e4e8172b31b51c6d3f9665f9",
+        "Created": "2026-11-12T13:41:11.400253166Z",
         "Path": "docker-entrypoint.sh",
         "Args": [
             "postgres"
@@ -912,18 +918,18 @@ $ docker container inspect markethub-p5-verified-standby
             "Restarting": false,
             "OOMKilled": false,
             "Dead": false,
-            "Pid": 41271,
+            "Pid": 46943,
             "ExitCode": 0,
             "Error": "",
-            "StartedAt": "2026-11-12T10:45:49.378822925Z",
+            "StartedAt": "2026-11-12T13:41:11.541628132Z",
             "FinishedAt": "0001-01-01T00:00:00Z"
         },
         "Image": "sha256:4da1a4828be12604092fa55311276f08f9224a74a62dcb4708bd7439e2a03911",
-        "ResolvConfPath": "/var/lib/docker/containers/044262ec56e6a2359e6432557e9c81714796807d2c8f5eea36a05e80188d346c/resolv.conf",
-        "HostnamePath": "/var/lib/docker/containers/044262ec56e6a2359e6432557e9c81714796807d2c8f5eea36a05e80188d346c/hostname",
-        "HostsPath": "/var/lib/docker/containers/044262ec56e6a2359e6432557e9c81714796807d2c8f5eea36a05e80188d346c/hosts",
-        "LogPath": "/var/lib/docker/containers/044262ec56e6a2359e6432557e9c81714796807d2c8f5eea36a05e80188d346c/044262ec56e6a2359e6432557e9c81714796807d2c8f5eea36a05e80188d346c-json.log",
-        "Name": "/markethub-p5-verified-standby",
+        "ResolvConfPath": "/var/lib/docker/containers/5fc87c2e00dcb2aa11c6bfd1923a6e8739f3feb5e4e8172b31b51c6d3f9665f9/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/5fc87c2e00dcb2aa11c6bfd1923a6e8739f3feb5e4e8172b31b51c6d3f9665f9/hostname",
+        "HostsPath": "/var/lib/docker/containers/5fc87c2e00dcb2aa11c6bfd1923a6e8739f3feb5e4e8172b31b51c6d3f9665f9/hosts",
+        "LogPath": "/var/lib/docker/containers/5fc87c2e00dcb2aa11c6bfd1923a6e8739f3feb5e4e8172b31b51c6d3f9665f9/5fc87c2e00dcb2aa11c6bfd1923a6e8739f3feb5e4e8172b31b51c6d3f9665f9-json.log",
+        "Name": "/markethub-p5-review-standby",
         "RestartCount": 0,
         "Driver": "overlayfs",
         "Platform": "linux",
@@ -933,14 +939,14 @@ $ docker container inspect markethub-p5-verified-standby
         "ExecIDs": null,
         "HostConfig": {
             "Binds": [
-                "markethub-p5-verified-standby-data:/var/lib/postgresql"
+                "markethub-p5-review-standby-data:/var/lib/postgresql"
             ],
             "ContainerIDFile": "",
             "LogConfig": {
                 "Type": "json-file",
                 "Config": {}
             },
-            "NetworkMode": "markethub-p5-verified-network",
+            "NetworkMode": "markethub-p5-review-network",
             "PortBindings": {},
             "RestartPolicy": {
                 "Name": "no",
@@ -1036,8 +1042,8 @@ $ docker container inspect markethub-p5-verified-standby
         "Mounts": [
             {
                 "Type": "volume",
-                "Name": "markethub-p5-verified-standby-data",
-                "Source": "/var/lib/docker/volumes/markethub-p5-verified-standby-data/_data",
+                "Name": "markethub-p5-review-standby-data",
+                "Source": "/var/lib/docker/volumes/markethub-p5-review-standby-data/_data",
                 "Destination": "/var/lib/postgresql",
                 "Driver": "local",
                 "Mode": "z",
@@ -1046,7 +1052,7 @@ $ docker container inspect markethub-p5-verified-standby
             }
         ],
         "Config": {
-            "Hostname": "044262ec56e6",
+            "Hostname": "5fc87c2e00dc",
             "Domainname": "",
             "User": "",
             "AttachStdin": false,
@@ -1084,30 +1090,30 @@ $ docker container inspect markethub-p5-verified-standby
             "StopTimeout": 1
         },
         "NetworkSettings": {
-            "SandboxID": "592088d8fb56b22190771b5718ea52bbc40f865749c920d8ecbe4b26b9ede7ae",
-            "SandboxKey": "/var/run/docker/netns/592088d8fb56",
+            "SandboxID": "d14612710b62413e86f149553768b3556ebfcb4ab7e60f8598b20e5a262cddf3",
+            "SandboxKey": "/var/run/docker/netns/d14612710b62",
             "Ports": {
                 "5432/tcp": null
             },
             "Networks": {
-                "markethub-p5-verified-network": {
+                "markethub-p5-review-network": {
                     "IPAMConfig": null,
                     "Links": null,
                     "Aliases": null,
                     "DriverOpts": null,
                     "GwPriority": 0,
-                    "NetworkID": "36bde85d3ac21a8c190c1fc9fc0821e0a270d3c43dca871fa0b81e888bd2691d",
-                    "EndpointID": "ae4d40c4c14af65d3906078ef457cd7272b29a50dbabe6c8daa33295badedf80",
+                    "NetworkID": "faa187efd01cf71361f038e013cbcf182e1df0165b496ff8ff06faf5add2e180",
+                    "EndpointID": "fbb6b959016d6cd12e719ea8c59b54555b41948f302917f58fc0717851010fb7",
                     "Gateway": "",
-                    "IPAddress": "172.20.0.3",
-                    "MacAddress": "22:71:78:64:80:1a",
+                    "IPAddress": "172.21.0.3",
+                    "MacAddress": "ee:68:ff:72:7f:36",
                     "IPPrefixLen": 16,
                     "IPv6Gateway": "",
                     "GlobalIPv6Address": "",
                     "GlobalIPv6PrefixLen": 0,
                     "DNSNames": [
-                        "markethub-p5-verified-standby",
-                        "044262ec56e6"
+                        "markethub-p5-review-standby",
+                        "5fc87c2e00dc"
                     ]
                 }
             }

@@ -7,7 +7,7 @@
     "actualCode": {
       "$numberInt": "11000"
     },
-    "message": "E11000 duplicate key error collection: markethub_p4.products index: sku_unique dup key: { sku: \"KB-001\" }"
+    "message": "E11000 duplicate key error collection: markethub_p4_review.products index: sku_unique dup key: { sku: \"KB-001\" }"
   },
   {
     "label": "Duplicate source product ID",
@@ -17,7 +17,7 @@
     "actualCode": {
       "$numberInt": "11000"
     },
-    "message": "E11000 duplicate key error collection: markethub_p4.products index: product_id_unique dup key: { product_id: 1 }"
+    "message": "E11000 duplicate key error collection: markethub_p4_review.products index: product_id_unique dup key: { product_id: 1 }"
   },
   {
     "label": "Negative price",

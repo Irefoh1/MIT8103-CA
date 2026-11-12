@@ -1,6 +1,6 @@
 {
   "_id": {
-    "$oid": "6af593e9cfdfa08c03be3d4c"
+    "$oid": "6af5baeb19757c15dfa89378"
   },
   "product_id": {
     "$numberLong": "1"
@@ -35,7 +35,7 @@
     "system": "PostgreSQL P1 snapshot",
     "imported_at": {
       "$date": {
-        "$numberLong": "1794479081610"
+        "$numberLong": "1794489067424"
       }
     }
   }
