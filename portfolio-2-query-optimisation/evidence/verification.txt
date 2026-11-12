@@ -1,0 +1,2 @@
+PASS: all four ordered result sets identical before and after indexing.
+PASS: schema, seed, queries, index creation, and measured plans executed without SQL errors.

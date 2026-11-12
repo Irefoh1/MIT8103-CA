@@ -1,0 +1,12 @@
+2026-10-22T23:33:46.245158+00:00
+PostgreSQL 18.3 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+128MB
+4MB
+4GB
+customers|5000
+products|1000
+orders|100000
+order_items|300000
+payment_attempts|60000
+max 100000
+max

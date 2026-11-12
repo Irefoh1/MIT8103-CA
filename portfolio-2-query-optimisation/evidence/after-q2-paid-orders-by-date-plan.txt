@@ -1,0 +1,9 @@
+Index Only Scan using p2_paid_orders_date_idx on orders  (cost=0.41..8.29 rows=194 width=24) (actual time=0.058..0.111 rows=198.00 loops=1)
+  Index Cond: ((ordered_at >= '2026-07-15 00:00:00+00'::timestamp with time zone) AND (ordered_at < '2026-07-16 00:00:00+00'::timestamp with time zone))
+  Heap Fetches: 0
+  Index Searches: 1
+  Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=157
+Planning Time: 2.705 ms
+Execution Time: 0.250 ms

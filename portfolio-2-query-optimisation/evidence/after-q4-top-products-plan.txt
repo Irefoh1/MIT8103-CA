@@ -1,0 +1,34 @@
+Limit  (cost=11664.00..11664.03 rows=10 width=59) (actual time=613.164..613.173 rows=10.00 loops=1)
+  Buffers: shared hit=2521
+  ->  Sort  (cost=11664.00..11666.50 rows=1000 width=59) (actual time=613.161..613.168 rows=10.00 loops=1)
+        Sort Key: (sum(((i.quantity)::numeric * i.unit_price))) DESC, p.product_id
+        Sort Method: top-N heapsort  Memory: 26kB
+        Buffers: shared hit=2521
+        ->  HashAggregate  (cost=11629.89..11642.39 rows=1000 width=59) (actual time=611.659..612.252 rows=1000.00 loops=1)
+              Group Key: p.product_id
+              Batches: 1  Memory Usage: 689kB
+              Buffers: shared hit=2515
+              ->  Hash Join  (cost=2893.83..9365.01 rows=181191 width=28) (actual time=80.989..448.531 rows=180000.00 loops=1)
+                    Hash Cond: (i.product_id = p.product_id)
+                    Buffers: shared hit=2515
+                    ->  Hash Join  (cost=2861.33..8854.87 rows=181191 width=17) (actual time=80.028..331.747 rows=180000.00 loops=1)
+                          Hash Cond: (i.order_id = o.order_id)
+                          Buffers: shared hit=2505
+                          ->  Seq Scan on order_items i  (cost=0.00..5206.00 rows=300000 width=25) (actual time=0.025..47.371 rows=300000.00 loops=1)
+                                Buffers: shared hit=2206
+                          ->  Hash  (cost=2106.37..2106.37 rows=60397 width=8) (actual time=79.385..79.387 rows=60000.00 loops=1)
+                                Buckets: 65536  Batches: 1  Memory Usage: 2856kB
+                                Buffers: shared hit=299
+                                ->  Index Only Scan using p2_paid_orders_date_idx on orders o  (cost=0.41..2106.37 rows=60397 width=8) (actual time=0.133..38.093 rows=60000.00 loops=1)
+                                      Heap Fetches: 0
+                                      Index Searches: 1
+                                      Buffers: shared hit=299
+                    ->  Hash  (cost=20.00..20.00 rows=1000 width=19) (actual time=0.895..0.895 rows=1000.00 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 59kB
+                          Buffers: shared hit=10
+                          ->  Seq Scan on products p  (cost=0.00..20.00 rows=1000 width=19) (actual time=0.031..0.379 rows=1000.00 loops=1)
+                                Buffers: shared hit=10
+Planning:
+  Buffers: shared hit=334
+Planning Time: 20.987 ms
+Execution Time: 615.389 ms
