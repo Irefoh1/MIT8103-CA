@@ -1,0 +1,11 @@
+{
+  "executed_at": {
+    "$date": {
+      "$numberLong": "1794479081863"
+    }
+  },
+  "mongodb_version": "8.0.38",
+  "database": "markethub_p4",
+  "topology": "standalone, isolated Docker container",
+  "shell_version": "2.14.2"
+}

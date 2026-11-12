@@ -1,0 +1,108 @@
+{
+  "explainVersion": "1",
+  "queryPlanner": {
+    "namespace": "markethub_p4.products",
+    "parsedQuery": {
+      "sku": {
+        "$eq": "KB-001"
+      }
+    },
+    "indexFilterSet": false,
+    "queryHash": "05509EF5",
+    "planCacheShapeHash": "05509EF5",
+    "planCacheKey": "BF8E5727",
+    "optimizationTimeMillis": {
+      "$numberInt": "0"
+    },
+    "maxIndexedOrSolutionsReached": false,
+    "maxIndexedAndSolutionsReached": false,
+    "maxScansToExplodeReached": false,
+    "prunedSimilarIndexes": false,
+    "winningPlan": {
+      "isCached": false,
+      "stage": "EXPRESS_IXSCAN",
+      "keyPattern": "{ sku: 1 }",
+      "indexName": "sku_unique"
+    },
+    "rejectedPlans": []
+  },
+  "executionStats": {
+    "executionSuccess": true,
+    "nReturned": {
+      "$numberInt": "1"
+    },
+    "executionTimeMillis": {
+      "$numberInt": "0"
+    },
+    "totalKeysExamined": {
+      "$numberInt": "1"
+    },
+    "totalDocsExamined": {
+      "$numberInt": "1"
+    },
+    "executionStages": {
+      "isCached": false,
+      "stage": "EXPRESS_IXSCAN",
+      "keyPattern": "{ sku: 1 }",
+      "indexName": "sku_unique",
+      "keysExamined": {
+        "$numberInt": "1"
+      },
+      "docsExamined": {
+        "$numberInt": "1"
+      },
+      "nReturned": {
+        "$numberInt": "1"
+      }
+    }
+  },
+  "queryShapeHash": "EAB3F5C3C790416B28D3ACD991E4E6372EB17DD4EED4F84FB748552FCEAB3585",
+  "command": {
+    "find": "products",
+    "filter": {
+      "sku": "KB-001"
+    },
+    "$db": "markethub_p4"
+  },
+  "serverInfo": {
+    "host": "85f6a35d6cbf",
+    "port": {
+      "$numberInt": "27017"
+    },
+    "version": "8.0.38",
+    "gitVersion": "b2f7afe3a6838999fd375c7a7ea678189f795568"
+  },
+  "serverParameters": {
+    "internalQueryFacetBufferSizeBytes": {
+      "$numberInt": "104857600"
+    },
+    "internalQueryFacetMaxOutputDocSizeBytes": {
+      "$numberInt": "104857600"
+    },
+    "internalLookupStageIntermediateDocumentMaxSizeBytes": {
+      "$numberInt": "104857600"
+    },
+    "internalDocumentSourceGroupMaxMemoryBytes": {
+      "$numberInt": "104857600"
+    },
+    "internalQueryMaxBlockingSortMemoryUsageBytes": {
+      "$numberInt": "104857600"
+    },
+    "internalQueryProhibitBlockingMergeOnMongoS": {
+      "$numberInt": "0"
+    },
+    "internalQueryMaxAddToSetBytes": {
+      "$numberInt": "104857600"
+    },
+    "internalDocumentSourceSetWindowFieldsMaxMemoryBytes": {
+      "$numberInt": "104857600"
+    },
+    "internalQueryFrameworkControl": "trySbeRestricted",
+    "internalQueryPlannerIgnoreIndexWithCollationForRegex": {
+      "$numberInt": "1"
+    }
+  },
+  "ok": {
+    "$numberInt": "1"
+  }
+}

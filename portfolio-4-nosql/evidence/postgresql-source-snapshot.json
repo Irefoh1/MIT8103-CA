@@ -1,0 +1,32 @@
+[
+  {
+    "product_id": "1",
+    "sku": "KB-001",
+    "name": "USB Keyboard",
+    "description": null,
+    "price": "15000.00",
+    "active": true,
+    "category_id": "1",
+    "category_name": "Electronics"
+  },
+  {
+    "product_id": "2",
+    "sku": "MS-001",
+    "name": "Optical Mouse",
+    "description": null,
+    "price": "5000.00",
+    "active": true,
+    "category_id": "1",
+    "category_name": "Electronics"
+  },
+  {
+    "product_id": "3",
+    "sku": "NB-001",
+    "name": "Notebook",
+    "description": null,
+    "price": "2000.00",
+    "active": true,
+    "category_id": "2",
+    "category_name": "Office Supplies"
+  }
+]

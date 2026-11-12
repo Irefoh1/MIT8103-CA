@@ -1,0 +1,19 @@
+PASS: Imported three P1 products as BSON documents
+PASS: All imported prices equal the PostgreSQL snapshot using Decimal128
+PASS: Embedded category filter returns two electronics products
+PASS: Decimal price-range query returns notebook and mouse
+PASS: Nested attributes and array membership identify USB accessories
+PASS: Aggregation computes two categories and NGN 10000.00 electronics average
+PASS: Updated keyboard attributes without changing other product shapes
+PASS: Inserted temporary document for delete demonstration
+PASS: Deleted temporary document while preserving the three source products
+PASS: Duplicate SKU rejected with code 11000
+PASS: Duplicate source product ID rejected with code 11000
+PASS: Negative price rejected with code 121
+PASS: Binary double money rejected with code 121
+PASS: Wrong currency rejected with code 121
+PASS: Blank product name rejected with code 121
+PASS: Non-object attributes rejected with code 121
+PASS: MongoDB naturally selects the unique SKU index for product lookup
+PASS: Indexed SKU query returns and examines exactly one document
+PASS: Rejected writes leave the catalogue at three products

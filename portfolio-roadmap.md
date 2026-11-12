@@ -1,6 +1,6 @@
 # MarketHub: alignment across the five portfolios
 
-This is an implementation plan, not evidence that later activities are complete. The case study remains the same simulated retailer throughout. Different database models represent different access patterns within that organisation.
+This roadmap explains cross-portfolio alignment. Actual completion and execution evidence are recorded in each activity's README and evidence folder; proposed features are not evidence of implementation. The case study remains the same simulated retailer throughout. Different database models represent different access patterns within that organisation.
 
 | Portfolio | Planned work | How Portfolio 1 supports it |
 |---|---|---|
@@ -12,7 +12,7 @@ This is an implementation plan, not evidence that later activities are complete.
 
 ## Portfolio 4 boundaries
 
-MongoDB is a planned document database implementation, not a requirement imposed by the brief. A product document can embed category display data and a flexible attributes object while retaining a stable SKU and product_id for mapping back to PostgreSQL. Store money as Decimal128 or integer minor units, not binary floating point.
+MongoDB is the chosen document database implementation, not a requirement imposed by the brief. Portfolio 4 now implements the catalogue snapshot with 19 verified checks; see `portfolio-4-nosql/README.md`. Product documents embed category display data and a flexible attributes object while retaining stable SKU and product_id values mapped from P1. Prices use Decimal128, not binary floating point.
 
 The document model intentionally differs from the normalised SQL model because its read pattern is fetching a complete product listing. Explain how category renaming and catalogue updates propagate to embedded values. For the exercise, label the catalogue import as a snapshot; do not imply automatic synchronisation. PostgreSQL remains the authoritative transactional stock, order, and payment store. Do not duplicate live stock into MongoDB and imply that it is safe for checkout without a consistency mechanism.
 

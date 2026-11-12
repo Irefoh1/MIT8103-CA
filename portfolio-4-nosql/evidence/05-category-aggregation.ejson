@@ -1,0 +1,20 @@
+[
+  {
+    "_id": "Electronics",
+    "product_count": {
+      "$numberInt": "2"
+    },
+    "average_price": {
+      "$numberDecimal": "10000.00"
+    }
+  },
+  {
+    "_id": "Office Supplies",
+    "product_count": {
+      "$numberInt": "1"
+    },
+    "average_price": {
+      "$numberDecimal": "2000.00"
+    }
+  }
+]

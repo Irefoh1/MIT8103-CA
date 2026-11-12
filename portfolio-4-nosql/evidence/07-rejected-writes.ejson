@@ -1,0 +1,72 @@
+[
+  {
+    "label": "Duplicate SKU",
+    "expectedCode": {
+      "$numberInt": "11000"
+    },
+    "actualCode": {
+      "$numberInt": "11000"
+    },
+    "message": "E11000 duplicate key error collection: markethub_p4.products index: sku_unique dup key: { sku: \"KB-001\" }"
+  },
+  {
+    "label": "Duplicate source product ID",
+    "expectedCode": {
+      "$numberInt": "11000"
+    },
+    "actualCode": {
+      "$numberInt": "11000"
+    },
+    "message": "E11000 duplicate key error collection: markethub_p4.products index: product_id_unique dup key: { product_id: 1 }"
+  },
+  {
+    "label": "Negative price",
+    "expectedCode": {
+      "$numberInt": "121"
+    },
+    "actualCode": {
+      "$numberInt": "121"
+    },
+    "message": "Document failed validation"
+  },
+  {
+    "label": "Binary double money",
+    "expectedCode": {
+      "$numberInt": "121"
+    },
+    "actualCode": {
+      "$numberInt": "121"
+    },
+    "message": "Document failed validation"
+  },
+  {
+    "label": "Wrong currency",
+    "expectedCode": {
+      "$numberInt": "121"
+    },
+    "actualCode": {
+      "$numberInt": "121"
+    },
+    "message": "Document failed validation"
+  },
+  {
+    "label": "Blank product name",
+    "expectedCode": {
+      "$numberInt": "121"
+    },
+    "actualCode": {
+      "$numberInt": "121"
+    },
+    "message": "Document failed validation"
+  },
+  {
+    "label": "Non-object attributes",
+    "expectedCode": {
+      "$numberInt": "121"
+    },
+    "actualCode": {
+      "$numberInt": "121"
+    },
+    "message": "Document failed validation"
+  }
+]

@@ -1,0 +1,84 @@
+[
+  {
+    "_id": {
+      "$oid": "6af593e9cfdfa08c03be3d4d"
+    },
+    "product_id": {
+      "$numberLong": "2"
+    },
+    "sku": "MS-001",
+    "name": "Optical Mouse",
+    "description": null,
+    "category": {
+      "category_id": {
+        "$numberLong": "1"
+      },
+      "name": "Electronics"
+    },
+    "price": {
+      "$numberDecimal": "5000.00"
+    },
+    "currency": "NGN",
+    "active": true,
+    "attributes": {
+      "connection": "USB",
+      "dpi": {
+        "$numberInt": "1600"
+      },
+      "buttons": {
+        "$numberInt": "3"
+      }
+    },
+    "tags": [
+      "computer",
+      "accessory"
+    ],
+    "source": {
+      "system": "PostgreSQL P1 snapshot",
+      "imported_at": {
+        "$date": {
+          "$numberLong": "1794479081610"
+        }
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6af593e9cfdfa08c03be3d4c"
+    },
+    "product_id": {
+      "$numberLong": "1"
+    },
+    "sku": "KB-001",
+    "name": "USB Keyboard",
+    "description": null,
+    "category": {
+      "category_id": {
+        "$numberLong": "1"
+      },
+      "name": "Electronics"
+    },
+    "price": {
+      "$numberDecimal": "15000.00"
+    },
+    "currency": "NGN",
+    "active": true,
+    "attributes": {
+      "layout": "QWERTY",
+      "connection": "USB",
+      "backlit": false
+    },
+    "tags": [
+      "computer",
+      "accessory"
+    ],
+    "source": {
+      "system": "PostgreSQL P1 snapshot",
+      "imported_at": {
+        "$date": {
+          "$numberLong": "1794479081610"
+        }
+      }
+    }
+  }
+]

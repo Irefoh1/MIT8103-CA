@@ -1,0 +1,112 @@
+{
+  "validator": {
+    "$jsonSchema": {
+      "bsonType": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "product_id",
+        "sku",
+        "name",
+        "description",
+        "category",
+        "price",
+        "currency",
+        "active",
+        "attributes",
+        "tags",
+        "source"
+      ],
+      "properties": {
+        "_id": {
+          "bsonType": "objectId"
+        },
+        "product_id": {
+          "bsonType": "long",
+          "minimum": {
+            "$numberLong": "1"
+          }
+        },
+        "sku": {
+          "bsonType": "string",
+          "pattern": "\\S"
+        },
+        "name": {
+          "bsonType": "string",
+          "pattern": "\\S"
+        },
+        "description": {
+          "bsonType": [
+            "string",
+            "null"
+          ]
+        },
+        "category": {
+          "bsonType": "object",
+          "additionalProperties": false,
+          "required": [
+            "category_id",
+            "name"
+          ],
+          "properties": {
+            "category_id": {
+              "bsonType": "long",
+              "minimum": {
+                "$numberLong": "1"
+              }
+            },
+            "name": {
+              "bsonType": "string",
+              "pattern": "\\S"
+            }
+          }
+        },
+        "price": {
+          "bsonType": "decimal",
+          "minimum": {
+            "$numberDecimal": "0"
+          }
+        },
+        "currency": {
+          "enum": [
+            "NGN"
+          ]
+        },
+        "active": {
+          "bsonType": "bool"
+        },
+        "attributes": {
+          "bsonType": "object"
+        },
+        "tags": {
+          "bsonType": "array",
+          "uniqueItems": true,
+          "items": {
+            "bsonType": "string",
+            "pattern": "\\S"
+          }
+        },
+        "source": {
+          "bsonType": "object",
+          "additionalProperties": false,
+          "required": [
+            "system",
+            "imported_at"
+          ],
+          "properties": {
+            "system": {
+              "enum": [
+                "PostgreSQL P1 snapshot"
+              ]
+            },
+            "imported_at": {
+              "bsonType": "date"
+            }
+          }
+        }
+      }
+    }
+  },
+  "validationLevel": "strict",
+  "validationAction": "error"
+}
